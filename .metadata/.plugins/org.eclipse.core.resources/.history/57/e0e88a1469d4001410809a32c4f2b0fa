@@ -1,0 +1,18 @@
+package IHM.Swing;
+
+import Circuit.Circuit;
+import IHM.CircuitObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import Voiture.Voiture;
+
+public class ManageIHM {
+	public IHMSwing manageIHM(Circuit c, Voiture v){
+		IHMSwing ihm = new IHMSwing();
+		ihm.add(new CircuitObserver(c));
+		ihm.add(new VoitureObserver(v));
+		ihm.add(new TrajetObserver(v));
+		
+		return ihm;
+	}
+}

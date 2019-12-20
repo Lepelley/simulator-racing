@@ -1,0 +1,65 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyRadarDijkstra implements Strategy{
+
+
+	private Voiture v;
+	private Circuit c;
+	private double[][] tabDist ;
+	
+	public StrategyRadarDijkstra(Voiture v, Circuit c, Dijkstra d){
+		this.v=v;
+		this.c=c;
+		tabDist=d.getMatrice();
+	}
+	
+	public Commande getCommande() {
+		Radar r = new RadarDijkstra(v, c,tabDist);
+
+		double angle = r.thetas()[r.getBestIndex()];
+		
+		
+		//distance entre le point visé par le radar et la voiture
+		double distPV = c.getDist((int)v.getPosition().getX(),(int)v.getPosition().getY()) - r.distancesInPixels()[r.getBestIndex()];
+		
+		if(v.getVitesse() < 0.4)
+			return new Commande(1,Math.signum(angle)*v.getMaxTurn());
+		
+		if(distPV > 150)
+			return new Commande(1,Math.signum(angle)*v.getMaxTurn()); 
+		else if (angle == 0)
+			return new Commande(1,0);
+		else if (Math.abs(angle) == 0.3){
+			if(v.getVitesse() >= 0.3)
+				return new Commande (-0.9,Math.signum(angle)*v.getMaxTurn());
+			else 
+				return new Commande (1,Math.signum(angle)*v.getMaxTurn());
+		}
+		else if (Math.abs(angle) == 0.6){
+			if(v.getVitesse() >= 0.5)
+				return new Commande (-0.9,Math.signum(angle)*v.getMaxTurn());
+			else 
+				return new Commande (1,Math.signum(angle)*v.getMaxTurn());
+		}
+		else if (Math.abs(angle) == 0.9){
+			if(v.getVitesse() >= 0.4)
+				return new Commande (-0.9,Math.signum(angle)*v.getMaxTurn());
+			else 
+				return new Commande (1,Math.signum(angle)*v.getMaxTurn());
+		}
+		else if (Math.abs(angle) == 1.2){
+			if(v.getVitesse() >= 0.2)
+				return new Commande (-0.9,Math.signum(angle)*v.getMaxTurn());
+			else 
+				return new Commande (1,Math.signum(angle)*v.getMaxTurn());
+		}
+		else return new Commande(0,0);
+	}
+}

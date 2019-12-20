@@ -1,0 +1,79 @@
+package Radar;
+
+import tools.TerrainTools;
+import geometrie.Vecteur;
+import Circuit.Circuit;
+import Circuit.Terrain;
+import Voiture.Voiture;
+
+public class RadarDijkstra implements Radar{
+	
+	private double[] distPix = new double[7];
+	private double intervalle = 0.3;
+	
+	private Voiture v;
+	private Circuit c;
+	private int bestIndex=0;
+	private double[][] distDij;
+	private double rotDepart = -((int)(distPix.length/2)*intervalle*10)/10;
+	
+	
+	public RadarDijkstra(Voiture v,Circuit c,double[][] d){
+		this.v = v;
+		this.c = c;
+		distDij=d;
+		distPix = scores();
+	}
+	
+	public double[] scores(){	
+		Vecteur dir = v.getDirection();
+		Vecteur pos = v.getPosition();
+		int currentX = (int) pos.getX();
+		int currentY = (int) pos.getY();
+		dir.rotation(rotDepart);
+		for(int i=0 ; i < distPix.length; i++){
+			while(TerrainTools.isRunnable(c.getTerrain((int) pos.getX(), (int) pos.getY()))){
+				pos.additionVoid(dir.multiplicationReturn(0.1));
+				//si on rencontre la ligne d'arrivée, on met une valeur négative dans le tableau, en s'assurant que la valeur de braquage soit la plus petite possible
+//				if(c.getTerrain((int) pos.getX(),(int) pos.getY()) == Terrain.EndLine){
+//					distPix[i+(int)(distPix.length/2)]= -5 + Math.abs(i);
+//					break;
+//				}
+				// si on croise un point plus près de l'arrivée, on met stock ses coordonnées
+				if(distDij[(int) pos.getX()][(int) pos.getY()] < distDij[currentX][currentY]){
+					currentX= (int) pos.getX();
+					currentY= (int) pos.getY();
+				}
+			}
+			distPix[i] = 0;
+			//si la distance du tableau d'indice courant est supérieure ou egale a 0, on la remplace par la meilleure distance
+			if(distPix[i+(int)(distPix.length/2)] >=0) distPix[i+(int)(distPix.length/2)] = distDij[currentX][currentY] ;
+			if(distPix[i+(int)(distPix.length/2)] < distPix[bestIndex]) bestIndex = i+(distPix.length/2);
+			pos = v.getPosition();
+			dir.rotation(intervalle);
+		}
+		return distPix;
+	}
+	
+	@Override 
+	public double[] distancesInPixels() {
+		return distPix;
+	}
+
+	@Override
+	public int getBestIndex() {
+		return bestIndex;
+	}
+
+	@Override
+	public double[] thetas() {
+		double[] tabAngles = new double[distPix.length];
+		for(int i = 0 ; i < distPix.length ; i++){
+			tabAngles[i] = (double)(rotDepart*10 + (i * intervalle*10))/10;
+		}
+	return tabAngles;
+	}
+
+	
+	
+}

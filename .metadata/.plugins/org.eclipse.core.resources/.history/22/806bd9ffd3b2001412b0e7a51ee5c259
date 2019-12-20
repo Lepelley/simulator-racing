@@ -1,0 +1,45 @@
+package simulation;
+
+import geometrie.Vecteur;
+
+import java.util.ArrayList;
+
+import strategy.Strategy;
+import Radar.RadarClassique;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Circuit.Terrain;
+import Circuit.TerrainTools;
+
+public class Simulation {
+
+	private ArrayList<Vecteur> list = new ArrayList<Vecteur>();
+	private Terrain[][] t;
+	private Voiture v;
+	private Strategy s;
+	
+	public Simulation(Terrain[][] t, Voiture v, Strategy s){
+		this.t=t;
+		this.v=v;
+		this.s=s;
+		//list = new ArrayList<Vecteur>();
+	}
+	public void run() throws VoitureException{
+		
+		
+		list.add(new Vecteur(v.getPosition().getX(),v.getPosition().getY()));
+		
+		
+		while(TerrainTools.isRunnable(t[(int)v.getPosition().getX()][(int)v.getPosition().getY()])){
+			RadarClassique r = new RadarClassique(v, t);
+			r.scores();
+			v.drive(s.getCommande());
+			list.add(new Vecteur(v.getPosition().getX(),v.getPosition().getY()));
+		}
+	}
+	
+	public ArrayList<Vecteur> getList(){
+			return list;
+	}
+}
+

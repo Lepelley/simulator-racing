@@ -1,0 +1,112 @@
+package main;
+
+
+import geometrie.Vecteur;
+
+import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import Voiture.Commande;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import Circuit.TerrainTools;
+
+public class TestTerrain {
+
+
+	public static void main(String[] args) throws FileNotFoundException {
+		
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez saisir le nom du fichier à ouvrir :");
+		String fichier = "Tracks/"+sc.nextLine();
+		//creation circuit
+		Circuit  circuit = CircuitFactoryFromFile.build(new FileInputStream(fichier));
+		String nom = TerrainTools.dessiner(fichier, circuit.getTerrain());
+		
+		
+		//creation voiture
+		Voiture v = VoitureFactory.build(circuit.getPointDepart().getX(),circuit.getPointDepart().getY());
+		
+		
+		//liste de commandes
+		//Vecteur[] taba = new Vecteur[400];
+		ArrayList<Commande> listeCom = new ArrayList<Commande>();
+		ArrayList<Vecteur> listePos = new ArrayList<Vecteur>();
+		ArrayList<Double> listeVit = new ArrayList<Double>();
+		ArrayList<Double> listeTurn = new ArrayList<Double>();
+		ArrayList<Vecteur> listeDir = new ArrayList<Vecteur>();
+		
+		Commande c1 = new Commande(1,0);
+		Commande c2 = new Commande(0,0.005);
+		Commande c3 = new Commande(0,-0.05);
+		
+		
+		for(int i = 0; i < 100 ; i++){
+			try {
+				v.drive(c1);
+				listeCom.add(c1);
+				listePos.add(v.getPosition());
+				listeVit.add(v.getVitesse());
+				listeTurn.add(v.getBraquage());
+				listeDir.add(v.getDirection());
+			} catch (VoitureException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(int i = 0; i < 100 ; i++){
+			try {
+				v.drive(c2);
+				listePos.add(v.getPosition());
+				listeVit.add(v.getVitesse());
+				listeTurn.add(v.getBraquage());
+				listeDir.add(v.getDirection());
+			} catch (VoitureException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(int i = 0; i < 100 ; i++){
+			try {
+				v.drive(c3);
+				listePos.add(v.getPosition());
+				listeVit.add(v.getVitesse());
+				listeTurn.add(v.getBraquage());
+				listeDir.add(v.getDirection());
+			} catch (VoitureException e) {
+				e.printStackTrace();
+			}
+		}
+		
+//		for(int i = 0; i < 100 ; i++){
+//			try {
+//				v.drive(new Commande(1,-0.05));
+//				listePos.add(v.getPosition());;
+//				//tabP[i] = new Vecteur(v.getPosition());
+//			} catch (VoitureException e) {
+//				e.printStackTrace();
+//			}
+//		}
+		
+		
+		
+		TerrainTools.dessinerTrajet(nom, circuit.getTerrain(), listePos, Color.black);
+		
+		try {
+			TerrainTools.creerLog(nom, listeCom, listePos, listeVit, listeTurn, listeDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		sc.close();
+		
+	}
+
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="291" key="DIALOG_WIDTH"/>
+		<item value="239" key="DIALOG_Y_ORIGIN"/>
+		<item value="498" key="DIALOG_HEIGHT"/>
+		<item value="1408" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Cantarell|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="10.0" key="selection"/>
+		<list key="findhistory">
+			<item value="{15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3,15.0,15.0,0.3};"/>
+			<item value="15.0"/>
+			<item value="k++"/>
+			<item value="getFi"/>
+			<item value="2150"/>
+			<item value="ihm"/>
+			<item value="syste"/>
+			<item value="system"/>
+		</list>
+		<list key="replacehistory">
+			<item value="10.0"/>
+			<item value="++k"/>
+		</list>
+	</section>
+</section>

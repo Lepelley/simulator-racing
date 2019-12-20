@@ -1,0 +1,19 @@
+package optimisation;
+
+import java.util.ArrayList;
+
+public class Genome<Gene> extends ArrayList<Gene> {
+	private double fitness;
+	public Genome(){
+		super();
+		fitness = GeneticAlgorithm.MIN_VALUE;
+	}
+	
+	public double getDouble(int i){
+		return (double) this.get(i);
+	}
+	
+	public void add(Gene i){
+		this.add(i);
+	}
+}

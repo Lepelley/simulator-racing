@@ -1,0 +1,59 @@
+package main;
+
+import java.awt.Color;
+import java.io.IOException;
+
+import dijkstra.Dijkstra;
+import optimisation.CrossingOperator;
+import optimisation.CrossingOperatorImpl;
+import optimisation.FitnessOperator;
+import optimisation.FitnessOperatorImpl;
+import optimisation.GenereGenome;
+import optimisation.GeneticAlgorithm;
+import optimisation.Genome;
+import optimisation.GenomeGenerator;
+import optimisation.MutationOperator;
+import optimisation.MutationOperatorImplDouble;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyGenome;
+import tools.DessinTools;
+import tools.ToolsFichiers;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class TestGenome {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		String fichier = Fonctions.selectionnerCircuit();
+	    Circuit c = CircuitFactoryFromFile.build("Tracks/" + fichier);
+        //StrategyGenome s = new StrategyGenome(v,r,c);
+        GenomeGenerator<Double> sGen = new GenereGenome();
+        Genome<Double> gen = sGen.build();
+
+		Dijkstra dij =  new Dijkstra(c) ;
+		Voiture v = VoitureFactory.build(c.getPointDepart(), c.getDirectionDepart());
+		Radar r = new RadarDijkstra(v, c, dij.getMatrice());
+		Strategy s = new StrategyGenome(v,r,gen);
+		Simulation sim = new Simulation (c, v, s);
+		
+//		for(int i = 0 ; i < gen.size(); i++){
+//			System.out.println(gen.get(i));
+//		}
+
+		try{
+			sim.play();
+		} catch (VoitureException e) {
+			e.printStackTrace();
+		}
+		
+		ToolsFichiers.saveListeCommande(sim.getRecord(), "Logs/"+fichier.substring(0,fichier.length()-4)+"-log");
+		DessinTools.dessinerTrajet(fichier.substring(0,fichier.length()-4), c, sim.getList() , Color.black);
+        
+	}
+}

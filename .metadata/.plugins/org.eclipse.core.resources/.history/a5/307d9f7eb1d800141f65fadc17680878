@@ -1,0 +1,37 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import geometrie.Vecteur;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyDebile implements Strategy {
+
+	private Strategy s;
+	private Voiture v;
+	private double[][] tab;
+	
+	public StrategyDebile(Strategy s,Voiture v,Dijkstra dij){
+		this.s = s;
+		this.v = v;
+		tab = dij.getMatrice();
+		
+	}
+	
+	@Override
+	public Commande getCommande() {
+		int i = (int)v.getPosition().getX();
+		int j = (int)v.getPosition().getY();
+		if(v.getPosition().distanceTo(new Vecteur(148,308)) < 50 && tab[i][j] > tab[148][308]
+				|| v.getPosition().distanceTo(new Vecteur(205,180)) < 50 && tab[i][j] > tab[205][180]
+				|| v.getPosition().distanceTo(new Vecteur(415,247)) < 50 && tab[i][j] > tab[415][247]
+																										){
+			if(v.getVitesse() < 0.5)
+				return new Commande(0.1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}
+		else return (s.getCommande());
+	}
+
+}

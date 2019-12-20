@@ -1,0 +1,11 @@
+package optimisation;
+
+public class MutationOperatorImplDouble implements MutationOperator<Double> {
+
+	private double rate;
+	private double[] sigma;
+	public void mute(Genome<Double> g) {
+
+	}
+
+}

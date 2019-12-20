@@ -1,0 +1,16 @@
+import javax.swing.JPanel;
+
+
+public class Rond extends JPanel{
+	private int x =-50;
+	private int y=-50;
+	
+	public Rond(){
+		
+	}
+	
+	public void paint(){
+		
+	}
+	
+}

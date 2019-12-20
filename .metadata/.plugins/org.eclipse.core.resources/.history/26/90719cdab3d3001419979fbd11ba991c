@@ -1,0 +1,23 @@
+package tools;
+
+import javax.swing.JFrame;
+
+import IHM.Swing.IHMSwing;
+
+public class Fenetre extends JFrame{
+	
+	private IHMSwing ihm;
+	
+	public Fenetre(IHMSwing ihm){
+		this.setSize(1920, 1080);
+		this.setLocation(0, 0);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setContentPane(ihm);
+		this.setVisible(true);
+		JPanel pan = new Jpanel();
+		
+		
+		this.pack();
+		this.ihm = ihm;
+	}
+}

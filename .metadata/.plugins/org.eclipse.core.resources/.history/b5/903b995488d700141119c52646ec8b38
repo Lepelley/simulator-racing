@@ -1,0 +1,77 @@
+package main;
+
+import java.io.IOException;
+
+import optimisation.GenereGenome;
+import optimisation.Genome;
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyGenome;
+import IHM.Fenetre;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.Swing.IHMSwing;
+import IHM.Swing.ManageIHM;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainIHM {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		//Circuit  circuit = CircuitFactoryFromFile.build(new FileInputStream("1_safe.trk"));
+		//IHMSwing ihm = new IHMSwing();	
+		//ihm.add(new CircuitObserver(circuit));
+		//Fenetre fen = new Fenetre(ihm);
+		
+
+		Circuit  circuit = CircuitFactoryFromFile.build("Tracks/bond_safe.trk");
+		
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+		//----------------------------------------------SELECTOR---------------------------------------------------------
+		
+		Dijkstra dij =  new Dijkstra(circuit) ;
+		Radar r = new RadarDijkstra(v, circuit, dij.getMatrice());
+		
+		GenereGenome gen = new GenereGenome();
+		Genome<Double> g = new Genome<Double>();
+		for(double x:gen.getDefault()){
+			g.add(x);
+		}
+		Strategy s = new StrategyGenome(v, r, g);
+		
+//		Strategy s = new StrategySelector();
+//		s.add(prudente, new SelectorPrudent(v, circuit));
+//		s.add(endLine, new SelectorArrivee(circuit, v));
+//		s.add(sP2P, new SelectorPointToPoint(circuit, v, tabVec));
+//		s.add(OP,new SelectorOP());
+//		s.add(sDij, new SelectorDijkstra());
+		
+		//-----------------------------------------------------------------------------------------------------------------
+		Simulation sim = new Simulation (circuit, v, s);
+
+	
+		IHMSwing ihm = new IHMSwing();
+		ManageIHM.manageIHM(ihm, circuit, v);
+		
+		sim.add(ihm);
+		Fenetre fen = new Fenetre(sim, ihm);
+		
+
+	
+		
+//		Thread t = new Thread(){
+//		public void run(){
+//			try{
+//				sim.play();
+//			} catch (VoitureException e1){
+//				e1.printStackTrace();
+//			}
+//		}};
+//		t.start();
+	}
+}

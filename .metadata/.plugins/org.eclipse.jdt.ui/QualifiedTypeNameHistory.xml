@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="tools.TerrainTools"/>
+<fullyQualifiedTypeName name="strategy.StrategySelector"/>
+<fullyQualifiedTypeName name="strategy.StrategyPrudente"/>
+<fullyQualifiedTypeName name="strategy.selector.SelectorPrudent"/>
+<fullyQualifiedTypeName name="strategy.selector.SelectorDijkstra"/>
+<fullyQualifiedTypeName name="strategy.StrategyArrivee"/>
+<fullyQualifiedTypeName name="strategy.selector.SelectorArrivee"/>
+<fullyQualifiedTypeName name="tools.ToolsFichiers"/>
+<fullyQualifiedTypeName name="IHM.Controleur"/>
+<fullyQualifiedTypeName name="IHM.Swing.IHMSwing"/>
+<fullyQualifiedTypeName name="simulation.Simulation"/>
+<fullyQualifiedTypeName name="java.util.Observer"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="Voiture.VoitureException"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,120 @@
+package Voiture;
+
+import geometrie.Vecteur;
+
+public class VoitureImpl implements Voiture{
+	
+	private double vmax;
+	private double alpha_c;
+	private double braquage;
+	private double alpha_f;
+	private double beta_f;
+
+	private double vitesse;
+	
+    private double[] tabVitesse     = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.};
+    private double[] tabTurn        = {1.,  0.9, 0.75, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.05};
+	
+	private Vecteur position;
+	private Vecteur direction;
+	
+	
+    public VoitureImpl(double x, double y, double vmax, double alpha_c, double braquage, double alpha_f, double beta_f){
+		position = new Vecteur (x,y);
+		direction = new Vecteur (0,1);
+	
+		this.vmax = vmax;
+		this.alpha_c = alpha_c;
+		this.braquage = braquage;
+		this.alpha_f = alpha_f;
+		this.beta_f = beta_f;
+		
+		vitesse = 0;
+		
+	}
+    
+    
+	public void drive(Commande c) throws VoitureException{
+		//if(c.getAcc() < -1 || c.getAcc() > 1) throw new VoitureException("Acceleration invalide");
+		//if(c.getTurn() < -1 || c.getTurn() > 1) throw new VoitureException("Rotation invalide");
+		if(!peutTourner(c.getTurn())) {
+			System.out.println(vitesse+braquage);
+			throw new VoitureException("Rotation trop importante");
+		}
+		
+		
+		   // approche normale
+        // 1) gestion du volant
+        direction.rotation(c.getTurn() * braquage); // modif de direction
+        // 2.1) gestion des frottements
+
+        vitesse -= alpha_f;
+        vitesse -= beta_f*vitesse;
+
+        // 2.2) gestion de l'acceleration/freinage
+
+        vitesse += c.getAcc() * alpha_c;
+
+        // 2.3) garanties, bornes...
+        direction.normalisation(); // modif de direction
+        vitesse = Math.max(0., vitesse); // pas de vitesse négative
+        vitesse = Math.min(vmax, vitesse);
+
+        // 3) mise à jour de la position
+        position.additionVoid(direction.multiplicationReturn(vitesse));
+		
+	}
+	
+
+	
+	private boolean peutTourner(double turn){
+		int i=9;
+		while(i >=0 && vitesse <= tabVitesse[i]*vmax){
+			i--;
+		}
+		if(Math.abs(turn) > tabTurn[i+1]*braquage) return false;
+		else return true;
+	}
+	
+	
+    public double getMaxTurn(){
+		int i = 0;
+		while(vitesse < tabVitesse[i]*vmax){
+			i++;	
+		}
+		if(vitesse == 1){
+			return tabTurn[9]*braquage;
+		}
+		else return tabTurn[i+1];
+    }
+
+
+
+    // pour l'observation
+	public double getBraquage() {
+		return braquage;
+	}
+
+
+	public double getVitesse() {
+		return vitesse;
+	}
+
+
+	public Vecteur getPosition() {
+		return new Vecteur(position.getX(),position.getY());
+	}
+
+
+	public Vecteur getDirection() {
+		return new Vecteur(direction.getX(),direction.getY());
+	}
+    
+    
+    
+    
+    
+
+
+	
+}

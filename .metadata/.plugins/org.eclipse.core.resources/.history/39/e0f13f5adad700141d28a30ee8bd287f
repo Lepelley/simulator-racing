@@ -1,0 +1,102 @@
+package tools;
+
+import java.io.*;
+import java.util.ArrayList;
+
+import Circuit.Terrain;
+import Voiture.Commande;
+
+public class ToolsFichiers {
+
+	public static void saveListeCommande(ArrayList<Commande> liste, String filename){
+        try {
+                DataOutputStream os = new DataOutputStream(new FileOutputStream(filename));
+                for(Commande c:liste){
+                        os.writeDouble(c.getAcc());
+                        os.writeDouble(c.getTurn());
+                }
+                os.close();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+	}
+	
+	@SuppressWarnings("resource")
+	public static ArrayList<Commande> loadListeCommande(  String filename) throws IOException{
+        ArrayList<Commande> liste = null;
+        DataInputStream os;
+        try {
+                os = new DataInputStream(new FileInputStream(filename));
+
+                liste = new ArrayList<Commande>();
+                double a,t;
+                while(true){ // on attend la fin de fichier
+                        a = os.readDouble();
+                        t = os.readDouble();
+                        liste.add(new Commande(a,t));
+                }
+
+        } catch (EOFException e){
+                return liste;
+        }
+	
+	}
+	   public static void fichierFromTerrain(Terrain[][] terrain, String filename){
+		   try {
+			   FileWriter fw = new FileWriter(filename, true);
+			   int height = terrain[0].length;
+			   int width = terrain.length;
+			   os.writeInt(1024);
+			   os.writeInt(width);
+//			   for(int i =0; i < terrain.length ; i++){
+//				   for(int j = 0; j< terrain[0].length ; j++){
+//						os.writeChar(TerrainTools.charFromTerrain(terrain[i][j]));
+//					}
+//			   }
+			   os.close();
+		   }catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+	   }		   
+	   
+	   public void ecrire(String nomFic, String texte)
+		{
+			//on va chercher le chemin et le nom du fichier et on me tout ca dans un String
+			String adressedufichier = System.getProperty("user.dir") + "/"+ nomFic;
+		
+			//on met try si jamais il y a une exception
+			try
+			{
+				/**
+				 * BufferedWriter a besoin d un FileWriter, 
+				 * les 2 vont ensemble, on donne comme argument le nom du fichier
+				 * true signifie qu on ajoute dans le fichier (append), on ne marque pas par dessus 
+				 
+				 */
+				FileWriter fw = new FileWriter(adressedufichier, true);
+				
+				// le BufferedWriter output auquel on donne comme argument le FileWriter fw cree juste au dessus
+				BufferedWriter output = new BufferedWriter(fw);
+				
+				//on marque dans le fichier ou plutot dans le BufferedWriter qui sert comme un tampon(stream)
+				output.write(texte);
+				//on peut utiliser plusieurs fois methode write
+				
+				output.flush();
+				//ensuite flush envoie dans le fichier, ne pas oublier cette methode pour le BufferedWriter
+				
+				output.close();
+				//et on le ferme
+				System.out.println("fichier créé");
+			}
+			catch(IOException ioe){
+				System.out.print("Erreur : ");
+				ioe.printStackTrace();
+				}
+
+		}
+
+}
+

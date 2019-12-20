@@ -1,0 +1,25 @@
+import java.awt.PopupMenu;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+
+
+public class Main {
+
+	public static void main(String[] args) {
+			
+			
+		JFrame f = new JFrame("ma fenetre");
+		f.setSize(300,100);
+		JButton b =new JButton("Mon bouton");
+		//f.getContentPane().add(b);
+		f.setVisible(true);
+
+//			JFrame frame = new Swing();
+	}
+
+}

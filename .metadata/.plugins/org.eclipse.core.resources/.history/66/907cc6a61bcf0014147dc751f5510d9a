@@ -1,0 +1,18 @@
+package optimisation;
+
+import java.util.Random;
+
+public class MutationOperatorImplDouble implements MutationOperator<Double> {
+
+	private double rate;
+	private double[] sigma;
+	private static Random r = new Random();
+	
+	public MutationOperatorImplDouble(double rate, double[] sigma){
+		this.rate = rate;
+	}
+	public void mute(Genome<Double> g) {
+
+	}
+
+}

@@ -1,0 +1,45 @@
+package optimisation;
+
+import java.util.Random;
+
+public class GenereGenome implements GenomeGenerator<Double>{
+	
+	private double[] defaultparam = new double[] {27.048231612873757, -1.2341404852605362, 0.1, 0.6840289901337422}; //Circuit 7 2022
+//	private double[] defaultparam = new double[] {27.048231612873757, -1.2341404852605362, 0.1, 0.6840289901337422}; //Circuit 6 2022
+//	private double[] defaultparam = new double[] {20.54446547716853, -1.0, -0.40254516556987574, 0.5888430125558128}; //Circuit 5 2172
+//	private double[] defaultparam = new double[] {26.645780658903774, -1.0, 0.1, 0.6211724386891068}; //circuit 4 4184
+//	private double[] defaultparam = new double[] {6.04301017503611, -1.0, -0.17852994308018363, 0.609211726709962}; //circuit 3 4529
+//	private double[] defaultparam = new double[] {5.0, -1.0, 0.15807636939093062, 0.6159986600776988}; //Circuit 2 3602
+//	private double[] defaultparam = new double[] {19.68615311895727, -1.0, 0.1, 0.6187529357761378}; //Circuit 1 2868 
+	//19.68615311895727, -1.0, 0.1, 0.6187529357761378
+
+	private double[] defaultparamSig = new double[] {15, 0.4, 0.3, 0.15};
+	private double[] paramMax = new double[] {50, 0, 0.9, 1};
+	private double[] paramMin = new double[] {5, -1, 0.1, 0.35};
+	
+	public GenereGenome(){
+		
+	}
+	public Genome<Double> build() {
+		Random r = new Random();
+		Genome<Double> gen = new Genome<Double>(); // génome vide
+        for(int i=0; i<defaultparam.length; i++){
+           // parcours d'un tableau de valeurs par défaut
+           // génération aléatoire gaussienne
+            double d = r.nextGaussian() * defaultparamSig[i] + defaultparam[i];
+            d = Math.min(d, paramMax[i]); // borne
+            d = Math.max(d, paramMin[i]);
+            gen.add(d);
+        }
+        return gen;
+	}
+	
+	public double[] getSigma(){
+		return defaultparamSig;
+	}
+	
+	public double[] getDefault(){
+		return defaultparam;
+	}
+
+}

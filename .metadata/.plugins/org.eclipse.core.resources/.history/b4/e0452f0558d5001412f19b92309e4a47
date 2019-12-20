@@ -1,0 +1,42 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyRadarDijkstra implements Strategy{
+
+
+	private Voiture v;
+	private Radar r;
+	
+	public StrategyRadarDijkstra(Voiture v, Radar r){
+		this.v = v;
+		this.r = r;
+	}
+	
+	public Commande getCommande() {
+		r.scores();
+
+		double angle = r.thetas()[r.getBestIndex()];
+		double an;
+		if(angle == 0)
+			an = 0;
+		else
+			an = Math.signum(angle)*v.getMaxTurn();
+
+		if(v.getVitesse()<0.3)
+			return new Commande(1,an);
+		if(Math.abs(angle) < Math.PI/8)
+			return new Commande (1,an);
+		else
+			return new Commande(-1,an);
+	}
+	
+	public void setRadar(Circuit c, Voiture v, Dijkstra dij){
+		r = new RadarDijkstra(v,c,dij.getMatrice());
+	}
+}

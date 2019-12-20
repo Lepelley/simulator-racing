@@ -1,0 +1,13 @@
+package strategy;
+
+import Voiture.Commande;
+
+public class StrategyGenome implements Strategy {
+
+	@Override
+	public Commande getCommande() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

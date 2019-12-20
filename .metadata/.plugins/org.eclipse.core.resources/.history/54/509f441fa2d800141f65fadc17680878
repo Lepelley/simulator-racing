@@ -1,0 +1,71 @@
+package main;
+
+import java.awt.Color;
+import java.io.IOException;
+
+import optimisation.GenereGenome;
+import optimisation.Genome;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyDebile;
+import strategy.StrategyGenome;
+import strategy.StrategyPrudente;
+import strategy.StrategyRadarDijkstra;
+import tools.DessinTools;
+import tools.ToolsFichiers;
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainCourseGenomeParam {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		final String fichier = "bond_safe.trk";
+		final Circuit  circuit = CircuitFactoryFromFile.build("Tracks/"+fichier);
+		
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+		Dijkstra dij =  new Dijkstra(circuit) ;
+		Radar r = new RadarDijkstra(v, circuit, dij.getMatrice());
+		GenereGenome gen = new GenereGenome();
+		Genome<Double> g = new Genome<Double>();
+		for(double x:gen.getDefault()){
+			g.add(x);
+		}
+//		Strategy s = new StrategyGenome(v, r, g);
+		Strategy s = new StrategyRadarDijkstra(v, r);
+		Strategy sd = new StrategyDebile(s,v);
+		Simulation sim = new Simulation (circuit, v, sd);
+		sim.setAnimated(true);
+		sim.jouer();
+		if(sim.getI() == 215)
+			sim.setAnimated(false);
+		Simulation sim2 = new Simulation(circuit,v,sd);
+		sim2.setAnimated(true);
+		sim2.jouer();
+		if(sim2.getI() == 20)
+			sim2.setAnimated(false);
+			
+		
+		sim.jouer();
+		DessinTools.dessinerTrajet(fichier.substring(0,fichier.length()-4), circuit, sim.getList() , Color.black);
+		
+//		Thread t = new Thread(){
+//		public void run(){
+//			try{
+//				System.out.println(sim.play());
+//				ToolsFichiers.saveListeCommande(sim.getRecord(), "Logs/"+fichier.substring(0,fichier.length()-4)+"-log");
+//				DessinTools.dessinerTrajet(fichier.substring(0,fichier.length()-4), circuit, sim.getList() , Color.black);
+//			} catch (VoitureException e1){
+//				e1.printStackTrace();
+//			}
+//		}};
+//		t.start();
+	
+	}
+}

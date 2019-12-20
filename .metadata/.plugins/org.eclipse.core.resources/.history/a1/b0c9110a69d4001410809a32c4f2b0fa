@@ -1,0 +1,13 @@
+package IHM.Swing;
+
+import Circuit.Circuit;
+import Voiture.Voiture;
+
+public class ManageIHM {
+	public IHMSwing manageIHM(Circuit c, Voiture v){
+		IHMSwing ihm = new IHMSwing();
+		
+		
+		return ihm;
+	}
+}

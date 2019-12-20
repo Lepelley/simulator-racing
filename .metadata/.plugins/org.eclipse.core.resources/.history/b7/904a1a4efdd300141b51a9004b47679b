@@ -1,0 +1,129 @@
+package main;
+
+import geometrie.Vecteur;
+
+import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyOP;
+import strategy.StrategyPointToPoint;
+import strategy.StrategyRadar;
+import strategy.StrategyRadarDijkstra;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.PointToPointObserver;
+import IHM.RadarObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import IHM.Swing.IHMSwing;
+import Radar.Radar;
+import Radar.RadarClassique;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainStrategy {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		
+		System.out.println("Veuillez saisir le nom du fichier a ouvrir : (Exemple : 1_safe)");
+		String nomC = sc.nextLine();
+		String fichier = nomC+".trk";
+		
+//		String fichier = Fonctions.selectionnerCircuit();
+		
+		
+		Circuit  circuit = CircuitFactoryFromFile.build("Tracks/" + fichier);
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+		JFrame fen = new JFrame();
+		fen.setLocation(576, 28);
+
+		IHMSwing ihm = new IHMSwing();
+		ihm.add(new CircuitObserver(circuit));
+		
+		Dijkstra dij =  new Dijkstra(circuit) ;
+		Radar r;
+		Strategy s = null;
+		
+		int strategy = -1;
+		while(strategy < 1 || strategy > 4 ){
+			System.out.println("Veuillez choisir la strategie a utiliser : (Exemple : 1, pour la strategie Radar classique)");
+			System.out.println("1. Strategie Radar Classique");
+			System.out.println("2. Strategie Radar Dijkstra");
+			System.out.println("3. Strategie Point � Point");
+			System.out.println("4. Strategie OP");
+			System.out.print("Choix : ");
+			strategy = sc.nextInt();
+			sc.close();
+		}
+			
+		switch(strategy){
+			
+			//--------------------------------------------RADAR CLASSIQUE---------------------------------------------------
+			case 1:
+				r = new RadarClassique(v,circuit);
+				s = new StrategyRadar(v,circuit,r);
+				ihm.add(new RadarObserver(v,r));
+				break;
+			
+			//--------------------------------------------RADAR DIJKSTRA----------------------------------------------------
+			case 2:
+				r = new RadarDijkstra(v, circuit, dij.getMatrice());
+				s = new StrategyRadarDijkstra(v, r);
+				ihm.add(new RadarObserver(v,r));
+				break;
+		
+			//--------------------------------------------POINT A POINT-----------------------------------------------------
+			case 3 :
+				Vecteur[] tabVec = {new Vecteur(571.0,862.0),new Vecteur(522.0,900.0),new Vecteur(459.0,868.0),new Vecteur(312.0,693.0),new Vecteur(169.0,634.0),new Vecteur(101.0,577.0),new Vecteur(103.0,465.0),new Vecteur(191.0,419.0),new Vecteur(332.0,454.0),new Vecteur(380.0,410.0),new Vecteur(293.0,324.0),new Vecteur(366.0,364.0),new Vecteur(183.0,252.0),new Vecteur(143.0,187.0),new Vecteur(185.0,125.0),new Vecteur(371.0,108.0),new Vecteur(622.0,126.0),new Vecteur(692.0,226.0),new Vecteur(645.0,340.0),new Vecteur(603.0,515.0)};
+				s = new StrategyPointToPoint(circuit, v, tabVec, dij.getMatrice());
+				ihm.add(new PointToPointObserver(tabVec));
+				break;
+				
+			//----------------------------------------------STRATEGY OP---------------------------------------------------------	
+			case 4:
+				r = new RadarDijkstra(v, circuit, dij.getMatrice());
+				ihm.add(new RadarObserver(v,r));
+				s = new StrategyOP(v,r);
+		}
+		
+		//----------------------------------------------FENETRE TEMPS REEL--------------------------------------------------
+		
+	
+		Simulation sim = new Simulation (circuit, v, s);
+		
+		ihm.add(new VoitureObserver(v));
+		//ihm.add(new VoiturePerso(v, "aaa", 20,20));
+		ihm.add(new TrajetObserver(v));
+		sim.add(ihm);
+		
+		ihm.setPreferredSize(new Dimension(768,1024));
+		fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fen.setContentPane(ihm);
+		fen.setVisible(true);
+		fen.pack();
+	
+		
+		Thread t = new Thread(){
+		public void run(){
+			try{
+				sim.play();
+			} catch (VoitureException e1){
+				e1.printStackTrace();
+			}
+		}};
+		t.start();
+	}
+}

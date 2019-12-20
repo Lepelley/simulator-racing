@@ -1,0 +1,12 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public interface Strategy {
+    public Commande getCommande();
+
+	public void setRadar(Circuit c, Voiture v, Dijkstra dij);
+}

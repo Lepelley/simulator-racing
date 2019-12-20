@@ -1,0 +1,66 @@
+package IHM;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+import tools.DessinTools;
+import Circuit.Circuit;
+
+public class ImagePerso extends JPanel implements MouseListener{
+	
+	private BufferedImage im;
+	private Circuit c;
+	
+	public ImagePerso(Circuit c){
+		this.c=c;
+		im = DessinTools.imageFromCircuit(c);
+		this.setPreferredSize(new Dimension(im.getWidth(),im.getHeight()));
+		
+	}
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		Graphics2D g = (Graphics2D)im.getGraphics();
+		g.setColor(Color.GREEN);
+		g.fillOval(arg0.getX()-2, arg0.getY()-2, 4, 4);
+		arg0.getComponent().repaint();
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+//	public Circuit getCircuit(){
+//		return c;
+//	}
+}

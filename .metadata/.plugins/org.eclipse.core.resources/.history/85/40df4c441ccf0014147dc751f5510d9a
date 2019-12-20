@@ -1,0 +1,5 @@
+package optimisation;
+
+public interface GenomeGenerator<Gene> {
+	public Genome<Gene> build;
+}

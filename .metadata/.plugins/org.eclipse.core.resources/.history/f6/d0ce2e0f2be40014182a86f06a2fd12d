@@ -1,0 +1,61 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import geometrie.Vecteur;
+import Voiture.Commande;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+
+public class StrategyDebile implements Strategy {
+	
+	private Strategy s;
+	private Voiture v;
+	private double[][] tab;
+	private double[] param = new double[] {
+			
+			3424.9896972081783,5000.2198279327304,0.6480768835665035,2811.766077807755,2844.5601442810294,0.6808304112490293,2015.5904699356684,2075.1078947811284,0.4271835011502705,1890.6789811123954,1950.938546175241,0.5101329059295908,1690.1370286384974,1704.9046007131005,1.0296669216800332,1413.082775797862,1446.6824872792502,0.4947559042401955,1384.5652299335916,1393.9930961623597,0.6587834658739922,929.7679559299602,967.7905727302143,0.6907802947618221,822.1479684035199,854.015611481038,0.6859944517271725,738.9896404095289,782.5519142774598,0.64600862769482,210.53443596865966,208.93240608549763,0.5154893393948
+			
+			
+	};
+	
+	
+	public StrategyDebile(Strategy s,Voiture v,Dijkstra dij){
+		this.s = s;
+		this.v = v;
+		tab = dij.getMatrice();
+		
+	}
+	public Commande getCommande() {
+
+		int i = (int)v.getPosition().getX();
+		int j = (int)v.getPosition().getY();
+		double acc = 1;
+//		System.out.println(tab[i][j]);
+		if(v.getVitesse() == 0){
+			return new Commande(1,s.getCommande().getTurn());
+		}
+		
+		for(int n = 0; n < param.length; n+=3){
+			if(tab[i][j] > param[n] && tab[i][j] < param[n+1]){
+				if(v.getVitesse() < param[n+2]){
+					acc = 1;
+				}
+				else
+					acc = -1;
+				break;
+			}
+		}
+//		 ---------------------------------------------------------------------------------------------------
+		if(tab[i][j] < 50 && v.getDirection().getX() > 0){
+			return new Commande(1,v.getMaxTurn());
+		}
+		else
+			return new Commande(acc,s.getCommande().getTurn());
+//		----------------------------------------------------------------------------------------------------	
+		
+	}
+	
+	
+}
+
+

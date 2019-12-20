@@ -1,0 +1,379 @@
+package tools;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import dijkstra.Dijkstra;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureFactory;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyRadarDijkstra;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.Swing.IHMSwing;
+import IHM.Swing.ManageIHM;
+
+public class Fenetre extends JFrame{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private IHMSwing ihm;
+	
+	private JComboBox<String> circuitBox = new JComboBox<String>();
+	private JComboBox<String> strategyBox = new JComboBox<String>();
+	private JButton bouton = new JButton("Go");
+	private JButton bouton2 = new JButton("Stop");
+	  
+	private Simulation sim;
+	private Circuit circuit = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+	private Strategy s;
+	private Voiture v;
+	private Dijkstra dij;
+	private  int stratSelector = 1;
+	private int circuitSelector = 1;
+	
+	public Fenetre(Simulation sim, IHMSwing ihm) throws FileNotFoundException{
+		this.setSize(1920,1080);
+		this.setPreferredSize(new Dimension(1920, 1024));
+		this.setLocation(0, 0);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.sim = sim;
+		this.ihm = ihm;
+		this.v = sim.getVoiture();
+		this.s = sim.getStrategy();
+		
+		
+		bouton.setPreferredSize(new Dimension(70, 30));
+		bouton.addActionListener(new BoutonListener()); 
+	    bouton.setBackground(Color.red);
+	    bouton2.setPreferredSize(new Dimension(70, 30));
+	    bouton2.setBackground(Color.green);
+	    bouton2.addActionListener(new Bouton2Listener());
+	    boutonsSet();
+		
+	
+		//selection circuit
+		circuitBox.setPreferredSize(new Dimension(100, 20));
+		circuitBox.addItem("1_safe");
+		circuitBox.addItem("2_safe");
+		circuitBox.addItem("3_safe");
+		circuitBox.addItem("4_safe");
+		circuitBox.addItem("5_safe");
+		circuitBox.addItem("6_safe");
+		circuitBox.addItem("7_safe");
+		circuitBox.addItem("8_safe");
+		circuitBox.addItem("aufeu");
+		circuitBox.addItem("bond");
+		circuitBox.addItem("Een2");
+		circuitBox.addItem("labymod");
+		circuitBox.addItem("labyperso");
+		circuitBox.addItem("perso");
+		circuitBox.addItem("t260_safe");
+		circuitBox.addItem("t2009");
+	    circuitBox.addActionListener(new CircuitBoxListener());
+	    
+	    //selection strategy
+	    strategyBox.setPreferredSize(new Dimension(100, 20));
+	    strategyBox.addItem("Option 1");
+	    strategyBox.addItem("Jouer");
+	    strategyBox.addItem("Stop");
+	    strategyBox.addItem("Circuit 2");
+	    strategyBox.addActionListener(new CircuitBoxListener());
+	    
+		JPanel gauche = new JPanel();
+		gauche.setMinimumSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		gauche.setPreferredSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		gauche.setBackground(Color.blue);
+		GridBagLayout layoutg = new GridBagLayout();
+		gauche.setLayout(layoutg);
+		GridBagConstraints gcg = new GridBagConstraints();
+		gcg.fill = GridBagConstraints.BOTH;
+		gcg.gridx = 0;
+		gcg.gridy= 0;
+		gcg.gridheight = 1;
+		gcg.gridwidth = 1;
+		gcg.gridwidth = GridBagConstraints.REMAINDER;
+		gauche.add(new JLabel ("Circuit"),gcg);
+		gcg.gridy = 1;	
+		gcg.gridwidth = GridBagConstraints.REMAINDER;
+		gauche.add(circuitBox,gcg);
+		gcg.gridy=3;
+		gcg.gridwidth = GridBagConstraints.REMAINDER;
+		gauche.add(new JLabel("Strategies"),gcg);
+		gcg.gridy = 4;
+		gcg.gridwidth = GridBagConstraints.REMAINDER;
+		gauche.add(strategyBox,gcg);
+		
+		
+		
+		
+		
+		JPanel droite = new JPanel();
+		droite.setMinimumSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		droite.setPreferredSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		droite.setBackground(Color.blue);
+		GridBagLayout layoutd = new GridBagLayout();
+		droite.setLayout(layoutd);
+		GridBagConstraints gcd = new GridBagConstraints();
+		gcd.fill = GridBagConstraints.BOTH;
+		gcd.gridx = 0;
+		gcd.gridy= 0;
+		gcd.gridheight = 1;
+		gcd.gridwidth = 1;
+		droite.add(bouton,gcd);
+		gcd.gridx = 1;	
+		gcd.gridwidth = GridBagConstraints.REMAINDER;
+		droite.add(bouton2,gcd);
+		
+		JPanel fond = new JPanel();
+		fond.setBackground(Color.blue);
+//		fond.setSize(new Dimension(this.getWidth(),this.getHeight()));
+//		fond.setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+		GridBagLayout layout = new GridBagLayout();
+		fond.setLayout(layout);
+		
+		
+		JPanel orangeLayout = new JPanel();
+		orangeLayout.setMinimumSize(new Dimension(5,this.getHeight()));
+		orangeLayout.setPreferredSize(new Dimension(5,this.getHeight()));
+		orangeLayout.setBackground(Color.DARK_GRAY);
+
+		
+		JPanel orangeLayout2 = new JPanel();
+		orangeLayout2.setMinimumSize(new Dimension(5,this.getHeight()));
+		orangeLayout2.setPreferredSize(new Dimension(5,this.getHeight()));
+		orangeLayout2.setBackground(Color.DARK_GRAY);
+		
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridheight = 1;
+		gc.gridwidth = 1;
+		fond.add(gauche);
+		
+		gc.gridx = 1;
+		fond.add(orangeLayout,gc);
+		gc.gridx = 2;
+		fond.add(ihm,gc);
+		gc.gridx = 3;
+		fond.add(orangeLayout2,gc);
+		gc.gridx = 4;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		fond.add(droite,gc);
+		
+		this.setContentPane(fond);
+		this.pack();
+		this.setVisible(true);
+	}
+
+	
+//	 switch(circuitBox.getSelectedIndex()){
+//	 case 0 :
+//		 System.out.println("2");
+//		 break;
+//	 case 1 :
+//		 if(sim.isAnimated()) 
+//			 break;
+//		 else{
+//			 sim.setAnimated(true);
+//			 sim.jouer();
+//			 break;
+//		 }
+//	 case 2 :
+//		 sim.setAnimated(false);
+//		 break;
+//	 case 3 :
+//		 //-------------------------------3---------------------------------
+//		 sim.setAnimated(false);	 			
+//		 circuitSelector = 1;
+//		
+//		 
+//// /!\ RESPECTER ORDRE CIRCUIT-VOITURE-STRAT /!\
+//		 //changement circuit
+//		 try { selecCircuit(circuitSelector); } catch (FileNotFoundException e) {e.printStackTrace();}
+//		 
+//		 //nouvelle voiture
+//		 v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+//		
+//		 //nouvelle strat associée à la nouvelle voiture +circuit(pour radar) si nécessaire
+//		 selecStrat(stratSelector);
+//		 
+//		 
+//		 sim.init(s,circuit,v);
+//		 ManageIHM.manageIHM(ihm, circuit,sim.getVoiture());
+//		
+//		 
+//		 repaint();
+//		 break;
+//		 //------------------------------------------------------------------
+//	 default :
+//		System.out.println("lol");	
+	class CircuitBoxListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			sim.setAnimated(false);
+			boutonsSet();
+			
+			// /!\ RESPECTER ORDRE CIRCUIT-VOITURE-STRAT /!\
+			 //changement circuit
+			 try { selecCircuit(circuitBox.getSelectedIndex()+1); } catch (FileNotFoundException e) {e.printStackTrace();}
+			
+			 //nouvelle voiture
+			 v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+			
+			 //nouvelle strat associée à la nouvelle voiture +circuit(pour radar) si nécessaire
+			 selecStrat(stratSelector);
+			 
+			 
+			 sim.init(s,circuit,v);
+			 ManageIHM.manageIHM(ihm, circuit,sim.getVoiture());
+			
+			 repaint(); 
+			 }
+			
+		}
+		
+		class StrategyBoxListener implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		
+		}
+		
+		  class BoutonListener implements ActionListener{
+			  public void actionPerformed(ActionEvent arg0) {
+				  sim.setAnimated(true);
+				  boutonsSet();
+				  sim.jouer();
+			  }
+		  }
+		  
+		  class Bouton2Listener implements ActionListener{
+			  public void actionPerformed(ActionEvent e) {
+				  sim.setAnimated(false);
+				  boutonsSet();
+			  }	
+		  }    
+		
+			  
+		private void boutonsSet(){
+			if(sim.isAnimated()){
+				bouton.setEnabled(false);
+			    bouton2.setEnabled(true);
+			    bouton2.setBackground(Color.green);
+			    bouton.setBackground(Color.red);
+			}
+			else{
+				bouton2.setEnabled(false);
+			    bouton.setEnabled(true);
+			    bouton.setBackground(Color.green);
+			    bouton2.setBackground(Color.red);
+			}
+		}
+		
+		private void selecStrat(int i){
+			if(i == 0){
+				s = new StrategyRadarDijkstra(v, new RadarDijkstra(v, circuit, dij.getMatrice()));
+		
+			}
+		}
+		
+		private void selecCircuit(int i) throws FileNotFoundException{
+			if(i == circuitSelector)
+				return;
+			
+			circuitSelector = i;
+			
+			switch(i){
+			case 1 :
+				circuit = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 2 :
+				circuit = CircuitFactoryFromFile.build("Tracks/2_safe.trk");
+				System.out.println("lol");
+				dij = new Dijkstra(circuit);
+				break;
+			case 3 :
+				circuit = CircuitFactoryFromFile.build("Tracks/3_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case  4:
+				circuit = CircuitFactoryFromFile.build("Tracks/4_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 5 :
+				circuit = CircuitFactoryFromFile.build("Tracks/5_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 6 :
+				circuit = CircuitFactoryFromFile.build("Tracks/6_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 7 :
+				circuit = CircuitFactoryFromFile.build("Tracks/7_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 8 :
+				circuit = CircuitFactoryFromFile.build("Tracks/8_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 9 :
+				circuit = CircuitFactoryFromFile.build("Tracks/aufeu.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 10 :
+				circuit = CircuitFactoryFromFile.build("Tracks/bond_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 11 :
+				circuit = CircuitFactoryFromFile.build("Tracks/Een2.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 12 :
+				circuit = CircuitFactoryFromFile.build("Tracks/labymod.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 13 :
+				circuit = CircuitFactoryFromFile.build("Tracks/labyperso.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 14 :
+				circuit = CircuitFactoryFromFile.build("Tracks/perso.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 15 :
+				circuit = CircuitFactoryFromFile.build("Tracks/t260_safe.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			case 16 :
+				circuit = CircuitFactoryFromFile.build("Tracks/t2009.trk");
+				dij = new Dijkstra(circuit);
+				break;
+			default :
+				circuit = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+				dij = new Dijkstra(circuit);
+			}
+		}
+		
+	}
+

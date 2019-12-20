@@ -1,0 +1,114 @@
+package strategy;
+
+import Circuit.Circuit;
+import Radar.Radar;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyRadarDijkstra implements Strategy{
+
+
+	private Voiture v;
+	private Circuit c;
+	private Radar r;
+	
+	public StrategyRadarDijkstra(Voiture v, Circuit c, Radar r){
+		this.v = v;
+		this.c = c;
+		this.r = r;
+	}
+	
+	public Commande getCommande() {
+		r.scores();
+
+		double angle = r.thetas()[r.getBestIndex()];
+		System.out.println(r.distancesInPixels()[r.getBestIndex()]);
+		double an;
+		double dist = r.distancesInPixels()[r.getBestIndex()];
+		if(angle == 0)
+			an = 0;
+		else
+			an = Math.signum(angle)*v.getMaxTurn();
+	    if(v.getVitesse() < 0.1){
+	    	return new Commande(1,an);
+	    }
+	    if(v.getVitesse() < 0.2 && an == 0)
+	    	return new Commande(1,an);
+	    if(dist < 100 && Math.abs(angle) < Math.PI/6)
+	    	return new Commande(-1,an);
+		if(Math.abs(angle) < Math.PI/6)
+			return new Commande(1,an);
+		else
+			return new Commande(-1,an);
+	}
+}
+//		// Virages
+//		double dist = r.distancesInPixels()[r.getBestIndex()];
+////		if(v.getVitesse() < 0.5 && an ==0)
+////			return new Commande(1,an);
+////		if(v.getVitesse() < 0.1 && an > 0)
+////			return new Commande(1,an);
+//		
+//		if(dist > 250 || Math.abs(angle) <= Math.PI/20){
+//			return new Commande(0.7,an);
+//		}
+//		else if(angle != 0){
+//			if(an*v.getBraquage() > v.getMaxTurn()){
+//				return new Commande(1,an);
+//			}
+//			else if(an*v.getBraquage() < v.getMaxTurn()){
+//				return new Commande(-1,an);
+//			}
+//			else{
+//				return new Commande(0,an);
+//			}
+//
+//		}
+//		else{
+//			return new Commande(0,0);
+//		}
+////		if(v.getVitesse() < 0.3)
+////			return new Commande(1,Math.signum(angle)*v.getMaxTurn());
+////		if (angle == 0)
+////			return new Commande(0.5,0);
+////		else
+////			return new Commande(-0.8,Math.signum(angle)*v.getMaxTurn());
+//	
+//		//System.out.println(r.distancesInPixels()[r.getBestIndex()]);
+//		//distance entre le point visé par le radar et la voiture
+////		double distPV = c.getDist((int)v.getPosition().getX(),(int)v.getPosition().getY()) - r.distancesInPixels()[r.getBestIndex()];
+////		
+////		if(v.getVitesse() < 0.15)
+////			return new Commande(0.5,Math.signum(angle)*v.getMaxTurn());
+////		
+////		if(distPV > 300 && angle <= 0.3)
+////			return new Commande(1,Math.signum(angle)*v.getMaxTurn()); 
+////		else if (angle == 0)
+////			return new Commande(1,0);
+////		else if (Math.abs(angle) == 0.3){
+////			if(v.getVitesse() >= 0.4)
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////			else 
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////		}
+////		else if (Math.abs(angle) == 0.6){
+////			if(v.getVitesse() >= 0.3)
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////			else 
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////		}
+////		else if (Math.abs(angle) == 0.9){
+////			if(v.getVitesse() >= 0.2)
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////			else 
+////				return new Commande (0,Math.signum(angle)*v.getMaxTurn());
+////		}
+////		else if (Math.abs(angle) == 1.2){
+////			if(v.getVitesse() >= 0.1)
+////				return new Commande (-1,Math.signum(angle)*v.getMaxTurn());
+////			else 
+////				return new Commande (0,Math.signum(angle)*v.getMaxTurn());
+////		}
+////		else return new Commande(0,0);
+//	}
+//}

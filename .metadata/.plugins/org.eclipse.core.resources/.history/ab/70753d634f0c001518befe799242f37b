@@ -1,0 +1,37 @@
+package main;
+
+import java.awt.Color;
+import java.io.IOException;
+
+import optimisation.GenereGenome;
+import optimisation.Genome;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyGenome;
+import tools.DessinTools;
+import tools.ToolsFichiers;
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainCourseGenomeParam {
+	public static void main(String[] args) throws VoitureException, IOException {
+		int a=3;
+		if(a==2){
+			System.out.println("lol");
+		}
+		else if(a==3){
+			System.out.println("bob");
+		}
+		if(a==3){
+			System.out.println("haha");
+		}
+	
+	
+	}
+}

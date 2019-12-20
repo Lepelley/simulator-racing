@@ -1,0 +1,18 @@
+package optimisation;
+
+public class CrossingOperatorImpl<Double> implements CrossingOperator<Double> {
+
+	
+	public Genome<Double> cross(Genome<Double> g1, Genome<Double> g2) {
+		int poidsG1 = (int)(Math.random()*10+1);
+		int poidsG2 = (int)(Math.random()*10+1);
+		
+		Genome<Double> g = new Genome<Double>();
+		for(int i = 0 ; i < g1.size() ; i++){
+			g.add(g1.getDouble(i)*poidsG1 + g2.getDouble(i)*poidsG2);
+		}
+		
+		return g;
+	}
+
+}

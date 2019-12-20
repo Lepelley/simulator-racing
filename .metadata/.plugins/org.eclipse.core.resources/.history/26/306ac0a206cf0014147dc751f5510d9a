@@ -1,0 +1,44 @@
+package IHM;
+
+import geometrie.Vecteur;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import IHM.Swing.ObserverSWING;
+import Radar.Radar;
+import Voiture.Voiture;
+
+public class RadarObserver implements ObserverSWING {
+
+	private Voiture v;
+	private Radar r;
+	
+	public RadarObserver(Voiture v, Radar r){
+		this.v = v;
+		this.r = r;
+	}
+	
+	public void print(Graphics g) {
+		
+		
+		Vecteur dir = v.getDirection();
+		Vecteur pos = v.getPosition();
+		
+		for(int i=0;i<r.distancesInPixels().length;i++){
+			dir.rotation(r.thetas()[i]);
+			pos.additionVoid(dir.multiplicationReturn(r.distancesInPixels()[i]));
+			if(i == 0/*r.getBestIndex()*/){
+				g.setColor(Color.green);
+				g.drawLine((int)v.getPosition().getX(), (int)v.getPosition().getY(), (int)pos.getX(), (int)pos.getY());
+				
+			}
+			else{
+				g.setColor(Color.black);
+				g.drawLine((int)v.getPosition().getX(), (int)v.getPosition().getY(), (int)pos.getX(), (int)pos.getY());
+			}
+			dir = v.getDirection();
+			pos = v.getPosition();
+		}
+	}
+}

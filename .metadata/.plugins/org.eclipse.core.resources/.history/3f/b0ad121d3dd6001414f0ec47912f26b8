@@ -1,0 +1,46 @@
+package optimisation;
+
+import dijkstra.Dijkstra;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyGenome;
+import Circuit.Circuit;
+
+public class FitnessOperatorImpl implements FitnessOperator<Double> {
+
+	private Circuit c;
+	private Simulation sim;
+	Dijkstra dij;
+	
+	public FitnessOperatorImpl (Circuit c){
+		this.c = c;
+		 dij =  new Dijkstra(c) ;
+		
+		
+		
+	}
+	public double fit(Genome<Double> g) {
+		try {
+			Voiture v = VoitureFactory.build(c.getPointDepart(), c.getDirectionDepart());
+			Radar r = new RadarDijkstra(v, c, dij.getMatrice());
+			Strategy s = new StrategyGenome(v,r,g);
+			
+			sim = new Simulation (c, v, s);
+			int iterations = (sim.play());
+			if(sim.isReussi()){
+				return -iterations;
+			}
+			else
+				return -1000001;
+		} catch (VoitureException e) {
+			e.printStackTrace();
+		}
+		
+		return -1000002;
+	}
+}

@@ -1,0 +1,25 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+
+
+
+public class Main {
+
+	public static void main(String[] args) {
+			
+			
+			
+			JFrame fen = new JFrame();
+			fen.setSize(50, 50);
+			fen.setLocation(500, 0);
+			fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			fen.setContentPane(ihm);
+			fen.setVisible(true);
+			fen.pack();
+
+	}
+
+}

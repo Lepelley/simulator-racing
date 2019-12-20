@@ -1,0 +1,31 @@
+package IHM;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+import tools.DessinTools;
+import Circuit.Circuit;
+
+public class ImagePerso extends JPanel{
+	
+	private BufferedImage im;
+	private Circuit c;
+	
+	public ImagePerso(Circuit c){
+		this.c=c;
+		im = DessinTools.imageFromCircuit(c);
+		this.setPreferredSize(new Dimension(im.getWidth(),im.getHeight()));
+		
+	}
+
+	public void print(Graphics g){
+		g.drawImage(im, 0, 0, null);
+	}
+	
+	public Circuit getCircuit(){
+		return c;
+	}
+}

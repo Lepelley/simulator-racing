@@ -1,0 +1,41 @@
+import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+public class Swing extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	 
+	public Swing() {
+	 
+		super("titre de l'application");
+	 
+//		WindowListener l = new WindowAdapter() {
+//			public void windowClosing(WindowEvent e){
+//				System.exit(0);
+//			}
+//		};
+//		addWindowListener(l);
+	 
+		JButton bouton = new JButton("Mon bouton");
+		bouton.setSize(new Dimension(200,200));
+		JPanel panneau = new JPanel();
+		panneau.add(bouton);
+	 
+		setContentPane(panneau);
+		setSize(500,500);
+		setVisible(true);
+	}
+	 
+}

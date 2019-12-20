@@ -1,0 +1,43 @@
+package strategy;
+
+import Circuit.Circuit;
+import Radar.Radar;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyRadar implements Strategy{
+
+	private Voiture v;
+	private Radar r;
+	
+	public StrategyRadar(Voiture v, Circuit c, Radar r){
+		this.v=v;
+		this.r = r;
+	}
+	
+	@Override
+	public Commande getCommande() {
+//		return new Commande(1,0);
+// Comment donner ce radar en argument 
+//		Radar r = new RadarClassique(v, c);
+//		System.out.println(v.getPosition());
+		r.scores();
+		double angle = r.thetas()[r.getBestIndex()];
+		if(v.getVitesse() > 0.4)
+			return new Commande(-1,Math.signum(angle)*v.getMaxTurn());
+		else
+			return new Commande(1,Math.signum(angle)*v.getMaxTurn());
+		
+//		if(angle == 0)
+//			return new Commande(1,0);
+//		else if(v.getVitesse() < 0.2){
+//			if(angle == 0) 
+//				return new Commande(1,0);
+//			else 
+//				return new Commande(0.5,Math.signum(angle)*v.getMaxTurn());
+//		}
+//		else
+//			return new Commande(-1,Math.signum(angle)*v.getMaxTurn());
+	}
+	
+}

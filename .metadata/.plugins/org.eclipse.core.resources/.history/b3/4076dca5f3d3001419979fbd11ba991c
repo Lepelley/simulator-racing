@@ -1,0 +1,143 @@
+package tools;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.FileNotFoundException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.Swing.IHMSwing;
+
+public class Fenetre extends JFrame{
+	
+	private IHMSwing ihm = new IHMSwing();
+	private JComboBox<String> circuitBox = new JComboBox<String>();
+	private Circuit c = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+	private CircuitObserver co = new CircuitObserver(c);
+	
+	public Fenetre() throws FileNotFoundException{
+		this.setSize(1920,1080);
+		this.setPreferredSize(new Dimension(1920, 1024));
+		this.setLocation(0, 0);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		ihm.setMinimumSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.setPreferredSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.add(co);
+		//Arriere plan
+		
+		
+		circuitBox.setPreferredSize(new Dimension(100, 20));
+	    circuitBox.addItem("Option 1");
+	    circuitBox.addItem("Option 2");
+	    circuitBox.addItem("Option 3");
+	    circuitBox.addItem("Option 4");
+	    circuitBox.addActionListener(new CircuitBoxListener());
+	    
+		JPanel gauche = new JPanel();
+		gauche.setMinimumSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		gauche.setPreferredSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));//(this.getWidth()-c.getHeight())/2,(this.getHeight()-c.getWidth())/2));
+		gauche.setBackground(Color.yellow);
+		gauche.add(circuitBox);
+		
+		JPanel droite = new JPanel();
+		droite.setMinimumSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		droite.setPreferredSize(new Dimension(((this.getWidth()-768)/2)-5,this.getHeight()));
+		droite.setBackground(Color.red);
+		
+		JPanel fond = new JPanel();
+		fond.setBackground(Color.blue);
+//		fond.setSize(new Dimension(this.getWidth(),this.getHeight()));
+//		fond.setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+		GridBagLayout layout = new GridBagLayout();
+		fond.setLayout(layout);
+		
+		
+		JPanel orangeLayout = new JPanel();
+		orangeLayout.setMinimumSize(new Dimension(5,this.getHeight()));
+		orangeLayout.setPreferredSize(new Dimension(5,this.getHeight()));
+		orangeLayout.setBackground(Color.orange);
+
+		
+		JPanel orangeLayout2 = new JPanel();
+		orangeLayout2.setMinimumSize(new Dimension(5,this.getHeight()));
+		orangeLayout2.setPreferredSize(new Dimension(5,this.getHeight()));
+		orangeLayout2.setBackground(Color.orange);
+		
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridheight = 1;
+		gc.gridwidth = 1;
+		fond.add(gauche);
+		
+		gc.gridx = 1;
+		fond.add(orangeLayout);
+		gc.gridx = 2;
+		fond.add(ihm);
+		gc.gridx = 3;
+		fond.add(orangeLayout2);
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridx = 4;
+		fond.add(droite);
+		
+		this.setContentPane(fond);
+		
+		
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	private void maj(){
+		ihm.repaint();
+	}
+	
+	class CircuitBoxListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			 switch(circuitBox.getSelectedIndex()){
+			 case 1 :
+				 try {
+					c = CircuitFactoryFromFile.build("Tracks/2_safe.trk");
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				 ihm.manageUpdate();
+				 System.out.println("1");
+				 break;
+			 case 0 :
+				 System.out.println("2");
+				 break;
+			 case 3 :
+				 System.out.println("1");
+				 break;
+			 case 4 :
+				 System.out.println("2");
+				 break;
+			 default :
+				System.out.println("lol");	 
+			 }
+			
+		}
+		
+	}
+}

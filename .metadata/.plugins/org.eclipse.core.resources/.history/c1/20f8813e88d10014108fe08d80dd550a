@@ -1,0 +1,39 @@
+package optimisation;
+
+import java.util.Random;
+
+public class GenereGenome<Double> implements GenomeGenerator<Double>{
+	
+	private double[] defaultparam;
+	private double[] defaultparamSig;
+	private double[] paramMax;
+	private double[] paramMin;
+	
+	public GenereGenome(){
+		// Distance de sécurité + accélération associée // ratio1 anglesouhaite/anglerealisable + acc associée // ratio2 anglesouhaite/anglerealisable + acc associée // limite reacc 1 et 2
+		defaultparam = new double[] {46, -0.82, 30, -1, 1.5, 0, 0.59, 0.40};
+		defaultparamSig = new double[] {0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4}; //0.4
+		paramMax = new double[] {999, 1, 90, 1, 999, 1, 1, 1};
+		paramMin = new double[] {0, -1, 0, 0, -1, -1, -1};	
+	}
+	public Genome<Double> build() {
+		Random r = new Random();
+		Genome<Double> gen = new Genome<Double>(); // gÃ©nome vide
+        for(int i=0; i<defaultparam.length; i++){
+           // parcours d'un tableau de valeurs par dÃ©faut
+
+           // gÃ©nÃ©ration alÃ©atoire gaussienne
+            double d = r.nextGaussian() * defaultparamSig[i] + defaultparam[i];
+            d = Math.min(d, paramMax[i]); // borne
+            d = Math.max(d, paramMin[i]);
+            Double d0 = new Double(d);
+            gen.add();
+        }
+        return gen;
+	}
+	
+	public double[] getSigma(){
+		return defaultparamSig;
+	}
+
+}

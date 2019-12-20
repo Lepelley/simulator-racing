@@ -1,0 +1,35 @@
+import javax.swing.JFrame;
+
+
+public class Swing extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	 
+	public Swing()) {
+	 
+	super("titre de l'application");
+	 
+	WindowListener l = new WindowAdapter() {
+	public void windowClosing(WindowEvent e){
+	System.exit(0);
+	}
+	};
+	addWindowListener(l);
+	 
+	JButton bouton = new JButton("Mon bouton");
+	JPanel panneau = new JPanel();
+	panneau.add(bouton);
+	 
+	setContentPane(panneau);
+	setSize(200,100);
+	setVisible(true);
+	}
+	 
+	public static void main(String [] args){
+	JFrame frame = new swing2();
+	}
+	}

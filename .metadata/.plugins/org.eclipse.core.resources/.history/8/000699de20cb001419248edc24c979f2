@@ -1,0 +1,77 @@
+package strategy;
+
+import geometrie.Vecteur;
+import tools.TerrainTools;
+import Circuit.Circuit;
+import Circuit.Terrain;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyArrivee implements Strategy {
+	
+	private double[] thetas = {0,-Math.PI/8,Math.PI/8};
+	
+	public StrategyArrivee(){
+		
+	}
+	
+	private Voiture v;
+	private Circuit c;
+	private int bestIndex=0;
+	private double[][] distDij;
+	
+
+	public double[] scores(){	
+		Vecteur dir;
+		Vecteur pos;
+		int currentX;
+		int currentY;
+		
+		double score = Double.POSITIVE_INFINITY;
+		double bestScore = Double.POSITIVE_INFINITY;
+		bestIndex = 0;
+		
+		
+		for(int i=0 ; i < thetas.length ; i++){
+			pos = v.getPosition();
+			currentX = (int) pos.getX();
+			currentY = (int) pos.getY();
+			
+			dir= v.getDirection();
+			dir.rotation(thetas[i]);
+			
+			while(TerrainTools.isRunnable(c.getTerrain((int) pos.getX(), (int) pos.getY()))){
+				if(c.getTerrain(pos) == Terrain.EndLine)
+					if(dir.scalaire(c.getDirectionArrivee()) > 0){
+						score = 0;
+						break;
+					}
+					else{
+						score = Double.POSITIVE_INFINITY;
+						break;
+					}
+				pos.additionVoid(dir.multiplicationReturn(0.1));
+				
+				// si la distance Dij de la position actuelle est inférieure à la meilleure distance actuelle, on remplace cette meilleure distance
+				if(distDij[(int) pos.getX()][(int) pos.getY()] < distDij[currentX][currentY]){
+					currentX= (int) pos.getX();
+					currentY= (int) pos.getY();
+				}
+				score = distDij[currentX][currentY];
+			}
+			
+			if(score < bestScore){
+				bestScore = distDij[currentX][currentY];
+				bestIndex = i;
+			}
+			
+			distPix[i] = (Math.sqrt( Math.pow( pos.getX() - v.getPosition().getX() , 2) + Math.pow( pos.getY() - v.getPosition().getY() , 2)));
+		}
+		return distPix;
+	}
+	public Commande getCommande() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

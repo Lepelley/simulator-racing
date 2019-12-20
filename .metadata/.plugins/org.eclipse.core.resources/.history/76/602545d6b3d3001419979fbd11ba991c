@@ -1,0 +1,47 @@
+package Circuit;
+
+import java.io.*;
+
+import tools.TerrainTools;
+
+public class CircuitFactoryFromFile {
+	public static Circuit build(InputStream f)throws FileNotFoundException{
+		
+		 Terrain[][] terrain = null;
+		 int width = 0,height = 0;
+		 try {
+		   // ouverture
+		   InputStreamReader fr = new InputStreamReader(f);
+		   // buffer de lecture
+		   BufferedReader in = new BufferedReader(fr);
+		   
+		   //lecture des deux premières lignes
+		   String buf = in.readLine();
+		   width=Integer.parseInt(buf);
+		   buf = in.readLine();
+		   height=Integer.parseInt(buf);
+		   
+		   terrain = new Terrain[height][width];
+		   
+		   //creation du terrain
+		   for(int i=0 ; i < height ; i++){
+			   for(int j=0; j < width ; j++){
+				   terrain[i][j]=TerrainTools.terrainFromChar((char)in.read());
+//				   if (terrain[i][j]==Terrain.StartPoint){
+//				   }
+			   }
+			   in.read(); //retour à la ligne
+		   }
+		
+		   in.close();
+		   
+		 // dans l'idéal, on sépare la gestion des exceptions
+		 } catch (Exception e) {
+		   e.printStackTrace();
+		   System.err.println("Invalid Format : " + f
+		            + "... Loading aborted");
+		 }
+		 CircuitImpl c = new CircuitImpl(terrain, width, height);
+		 return c;
+	}
+}

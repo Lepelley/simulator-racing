@@ -1,0 +1,112 @@
+import java.awt.Color;
+
+import javax.swing.JFrame;
+
+
+public class Fenetre extends JFrame{
+	
+	private Panneau pan = new Panneau();
+	
+	  public Fenetre(){
+		    this.setTitle("Bob");
+		    this.setSize(400, 500);
+		    this.setLocationRelativeTo(null);
+		    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);           
+		    this.setContentPane(pan);
+		    this.setVisible(true);
+		    
+
+		    go();
+	}
+	  
+	  
+	  private void go(){
+		  //Les coordonnées de départ de notre rond
+		  int x = pan.getX(), y = pan.getY();
+		  //Le booléen pour savoir si l'on recule ou non sur l'axe x
+		  boolean backX = false;
+		  //Le booléen pour savoir si l'on recule ou non sur l'axe y
+		  boolean backY = false;
+
+		  //Dans cet exemple, j'utilise une boucle while
+		  //Vous verrez qu'elle fonctionne très bien
+		  while(true){
+		    //Si la coordonnée x est inférieure à 1, on avance
+		    if(x < 1)
+		      backX = false;
+
+		    //Si la coordonnée x est supérieure à la taille du Panneau moins la taille du rond, on recule
+		    if(x > pan.getWidth()-50)
+		      backX = true;
+
+		    //Idem pour l'axe y
+		    if(y < 1)
+		      backY = false;
+		    if(y > pan.getHeight()-50)
+		      backY = true;
+
+		    //Si on avance, on incrémente la coordonnée
+		    //backX est un booléen, donc !backX revient à écrire
+		    //if (backX == false)
+		    if(!backX)
+		      pan.setX(++x);
+
+		    //Sinon, on décrémente
+		    else
+		      pan.setX(--x);
+
+		    //Idem pour l'axe Y
+		    if(!backY)
+		      pan.setY(++y);
+		    else
+		      pan.setY(--y);
+
+		    //On redessine notre Panneau
+		    pan.repaint();
+
+		    //Comme on dit : la pause s'impose ! Ici, trois millièmes de seconde
+		    try {
+		      Thread.sleep(3);
+		    } catch (InterruptedException e) {
+		      e.printStackTrace();
+		    }
+		  }
+		}
+//	  private void go(){
+//			  int x = rond.getX();
+//			  int y = rond.getY();
+//			  boolean reculeX=false;
+//			  boolean reculeY=false;
+//			  while (true){
+////				  x = rond.getX();
+////				  y = rond.getY();
+//				  if(x < 1 )
+//					  reculeX = false;
+//				  if(y <1 )
+//					  reculeY = false;
+//				  if(x == rond.getWidth()-50)
+//					  reculeX = true;
+//				  if(y == rond.getHeight()-50)
+//					  reculeY = true;
+//				  
+//				  if(reculeX)
+//					  rond.setX(--x);
+//				  else
+//					  rond.setX(++x);
+//				  if(reculeY)
+//					  rond.setY(--y);
+//				  else
+//					  rond.setY(++y);
+//				  rond.repaint();
+//				  try {
+//					Thread.sleep(3);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+////				  rond.repaint();
+//			  
+//				  
+//		  }
+	
+}

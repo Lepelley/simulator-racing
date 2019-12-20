@@ -1,0 +1,62 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import optimisation.Genome;
+import Radar.Radar;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyGenome implements Strategy {
+	private Voiture v;
+	private double[] param;
+	private Strategy s;
+	private double[][] tab;
+	
+	public StrategyGenome(Voiture v, Radar r, Genome<Double> gen, Dijkstra dij){	
+		this.v = v;	
+		s = new StrategyRadarDijkstra(v, r);
+		param = new double[gen.size()];
+	
+		for(int i = 0 ; i < gen.size(); i++){
+			param[i] = gen.get(i);
+		}
+		tab = dij.getMatrice();
+	}
+	public Commande getCommande() {
+		int i = (int)v.getPosition().getX();
+		int j = (int)v.getPosition().getY();
+		if(tab[i][j] > param[0] && tab[i][j] < param[1]){
+			if(v.getVitesse() < param[2])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}
+		if(tab[i][j] > param[3] && tab[i][j] < param[4]){
+			if(v.getVitesse() < param[5])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}	if(tab[i][j] > param[6] && tab[i][j] < param[7]){
+			if(v.getVitesse() < param[8])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}	if(tab[i][j] > param[9] && tab[i][j] < param[10]){
+			if(v.getVitesse() < param[11])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}	if(tab[i][j] > param[12] && tab[i][j] < param[13]){
+			if(v.getVitesse() < param[14])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}	if(tab[i][j] > param[15] && tab[i][j] < param[16]){
+			if(v.getVitesse() < param[17])
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}
+		return s.getCommande();
+	}
+}

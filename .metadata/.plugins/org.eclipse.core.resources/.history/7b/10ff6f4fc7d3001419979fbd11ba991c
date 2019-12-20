@@ -1,0 +1,71 @@
+package tools;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.FileNotFoundException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.Swing.IHMSwing;
+
+public class Fenetre extends JFrame{
+	
+	private IHMSwing ihm = new IHMSwing();
+	
+	public Fenetre() throws FileNotFoundException{
+		this.setSize(1920, 1080);
+//		this.setPreferredSize(new Dimension(1920, 1024));
+		this.setLocation(0, 0);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBackground(Color.blue);
+		
+		Circuit c = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+		
+		ihm.setPreferredSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.setLocation(0, 0);
+		ihm.add(new CircuitObserver(c));
+		
+		JPanel arrierePlan = new JPanel();
+		arrierePlan.setBackground(Color.blue);
+		
+		JPanel course = new JPanel();
+		course.setPreferredSize(new Dimension(768,1024));
+		course.add(ihm);
+		
+		JPanel gauche = new JPanel();
+		gauche.setPreferredSize(new Dimension(500,500));//(this.getWidth()-c.getHeight())/2,(this.getHeight()-c.getWidth())/2));
+		gauche.setBackground(Color.yellow);
+		
+		JPanel droite = new JPanel();
+//		droite.setSize(50, 50);
+		droite.setPreferredSize(new Dimension(50,0));//(this.getWidth()-c.getHeight())/2,(this.getHeight()-c.getWidth())/2));
+		droite.setBackground(Color.red);
+		
+		JPanel fond = new JPanel();
+		arrierePlan.setAlignmentY(JPanel.TOP_ALIGNMENT);
+		fond.setAlignmentX(TOP_ALIGNMENT);
+		fond.setSize(this.getWidth(), this.getHeight());
+		
+		fond.setLayout(new BoxLayout(fond, BoxLayout.LINE_AXIS));
+		fond.add(gauche);
+		fond.add(course);
+		fond.add(droite);
+		
+		arrierePlan.add(fond);
+		
+		this.setContentPane(arrierePlan);
+//		this.pack();
+		this.setVisible(true);
+	}
+	
+	class Box extends JComboBox{
+		
+	}
+}

@@ -1,0 +1,85 @@
+package Radar;
+
+import tools.TerrainTools;
+import geometrie.Vecteur;
+import Circuit.Circuit;
+import Circuit.Terrain;
+import Voiture.Voiture;
+
+public class RadarClassique implements Radar{
+	
+	private double[] thetas = {0,-0.9,-0.6,-0.3,-(Math.PI/20),-(Math.PI/30),(Math.PI/30),(Math.PI/20),0.3,0.6,0.9};
+	private double[] distPix = new double[thetas.length];
+	
+	private Voiture v;
+	private Circuit c;
+	private int bestIndex;
+	
+	
+	public RadarClassique(Voiture v,Circuit c){
+		this.v = v;
+		this.c = c;
+		distPix = scores();
+		triTab();
+	}
+	
+	
+	private  void triTab(){
+		int i = thetas.length;
+		boolean test;
+		do{
+			test=false;
+			for(int j=0;j<i-1;j++){
+				if(Math.abs(thetas[j])>Math.abs(thetas[j+1])){
+				double t = thetas[j];
+				thetas[j] = thetas[j+1];
+				thetas[j+1] = t;
+				test=true;
+				}
+			}
+		i--;		
+		}while(test==true);		
+	}
+	
+	public double[] scores(){
+		Vecteur dir;
+		Vecteur pos;
+		bestIndex = 0;
+		for(int i=0 ; i < thetas.length ; i++){
+			pos = v.getPosition();
+			dir= v.getDirection();
+			
+			dir.rotation(thetas[i]);
+			while(TerrainTools.isRunnable(c.getTerrain(pos))){
+				if(c.getTerrain(pos) == Terrain.EndLine)
+					break;
+				pos.additionVoid(dir.multiplicationReturn(0.1));
+			}
+			if(c.getTerrain(pos) == Terrain.EndLine){
+				bestIndex = i;
+				break;
+			}
+			distPix[i]=(Math.sqrt( Math.pow( pos.getX() - v.getPosition().getX() , 2) + Math.pow( pos.getY() - v.getPosition().getY() , 2)));
+			if(distPix[i] > distPix[bestIndex]) bestIndex = i;
+		}
+		return distPix;
+	}
+	
+	@Override 
+	public double[] distancesInPixels() {
+		return distPix;
+	}
+
+	@Override
+	public int getBestIndex() {
+		return bestIndex;
+	}
+
+	@Override
+	public double[] thetas() {
+		return thetas;
+	}
+
+	
+	
+}

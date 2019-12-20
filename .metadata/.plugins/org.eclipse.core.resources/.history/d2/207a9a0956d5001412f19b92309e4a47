@@ -1,0 +1,9 @@
+package strategy;
+
+import Voiture.Commande;
+
+public interface Strategy {
+    public Commande getCommande();
+
+	public void setRadar();
+}

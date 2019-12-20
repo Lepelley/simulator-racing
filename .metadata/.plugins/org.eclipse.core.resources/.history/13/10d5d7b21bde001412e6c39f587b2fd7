@@ -1,0 +1,92 @@
+package main;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import optimisation.GenereGenome;
+import optimisation.Genome;
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyArrivee;
+import strategy.StrategyDebile;
+import strategy.StrategyGenome;
+import strategy.StrategyPrudente;
+import strategy.StrategyRadarDijkstra;
+import strategy.StrategySelector;
+import strategy.selector.SelectorArrivee;
+import strategy.selector.SelectorDijkstra;
+import strategy.selector.SelectorPrudent;
+import tools.DessinTools;
+import tools.ToolsFichiers;
+import IHM.Fenetre;
+import IHM.ImagePerso;
+import IHM.RadarObserver;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.Swing.IHMSwing;
+import IHM.Swing.ManageIHM;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainIHM {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		String file = "bond_safe.trk-perso";
+		Circuit  circuit = CircuitFactoryFromFile.build("Tracks/"+file);
+		
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+		
+			Dijkstra dij =  new Dijkstra(circuit) ;
+//		DessinTools.dessinerDijkstra("labymod-dij", circuit, dij.getMax(), Color.magenta);
+		Radar r = new RadarDijkstra(v, circuit, dij.getMatrice());
+		
+		GenereGenome gen = new GenereGenome();
+		Genome<Double> g = new Genome<Double>();
+		for(double x:gen.getDefault()){
+			g.add(x);
+		}
+//		Strategy s = new StrategyGenome(v, r, g,dij);
+//		Simulation sim = new Simulation (circuit, v, s);
+		
+//		
+		Strategy sdij = new StrategyRadarDijkstra(v, r);
+		Strategy s = new StrategyDebile(sdij,v,dij);
+//		
+		
+//		StrategySelector s = new StrategySelector();
+//		Strategy sd = new StrategyDebile(sdij,v,dij);
+//		Strategy pru = new StrategyPrudente(sd);
+//		Strategy el = new StrategyArrivee(circuit, v, sdij);
+//		
+//		s.add(el, new SelectorArrivee(circuit, v));
+//		s.add(pru, new SelectorPrudent(v, circuit));
+//		s.add(sd, new SelectorDijkstra());
+		
+		
+		
+		Simulation sim = new Simulation (circuit, v, s);
+
+		
+
+		
+
+	
+		IHMSwing ihm = new IHMSwing();
+		ManageIHM.manageIHM(ihm, circuit, v);
+		sim.add(ihm);
+		
+		@SuppressWarnings("unused")
+		Fenetre fen = new Fenetre(sim, ihm);
+
+	}
+}

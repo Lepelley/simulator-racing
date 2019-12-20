@@ -1,0 +1,5 @@
+package optimisation;
+
+public interface FitnessOperator<Gene> {
+
+}

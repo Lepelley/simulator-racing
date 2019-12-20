@@ -1,0 +1,22 @@
+package strategy;
+
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyDebile implements Strategy {
+
+	private Strategy s;
+	private Voiture v;
+	
+	public StrategyDebile(Strategy s,Voiture v){
+		this.s = s;
+		this.v = v;
+	}
+	
+	@Override
+	public Commande getCommande() {
+		
+		return s.getCommande();
+	}
+
+}

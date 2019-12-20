@@ -1,0 +1,13 @@
+package optimisation;
+
+public class CrossingOperatorImpl<Gene> implements CrossingOperator<Gene> {
+
+	
+	public Genome<Gene> cross(Genome<Gene> g1, Genome<Gene> g2) {
+		int poidsG1 = (int)(Math.random()*10+1);
+		int poidsG2 = (int)(Math.random()*10+1);
+		
+		Genome<Gene> g = new Genome<Gene>[8];
+	}
+
+}

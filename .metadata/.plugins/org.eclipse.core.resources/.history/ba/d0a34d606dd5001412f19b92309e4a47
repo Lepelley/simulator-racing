@@ -1,0 +1,98 @@
+package main;
+
+import geometrie.Vecteur;
+
+import java.awt.Dimension;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.Strategy;
+import strategy.StrategyArrivee;
+import strategy.StrategyOP;
+import strategy.StrategyPointToPoint;
+import strategy.StrategyPrudente;
+import strategy.StrategyRadarDijkstra;
+import strategy.StrategySelector;
+import strategy.selector.SelectorArrivee;
+import strategy.selector.SelectorDijkstra;
+import strategy.selector.SelectorOP;
+import strategy.selector.SelectorPointToPoint;
+import strategy.selector.SelectorPrudent;
+import tools.Fenetre;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import IHM.Swing.IHMSwing;
+import IHM.Swing.ManageIHM;
+import Radar.Radar;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+
+public class MainIHM {
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		//Circuit  circuit = CircuitFactoryFromFile.build(new FileInputStream("1_safe.trk"));
+		//IHMSwing ihm = new IHMSwing();	
+		//ihm.add(new CircuitObserver(circuit));
+		//Fenetre fen = new Fenetre(ihm);
+		
+		String fichier = Fonctions.selectionnerCircuit();
+
+		Circuit  circuit = CircuitFactoryFromFile.build("Tracks/" + fichier);
+		
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+		//----------------------------------------------SELECTOR---------------------------------------------------------
+		
+		Dijkstra dij =  new Dijkstra(circuit) ;
+		Radar r = new RadarDijkstra(v, circuit, dij.getMatrice());
+		Strategy sDij = new StrategyRadarDijkstra(v, r);
+		
+		Vecteur[] tabVec = {new Vecteur(389.0,714.0)};
+		Strategy sP2P = new StrategyPointToPoint(circuit, v, tabVec, dij.getMatrice());
+		
+		Strategy endLine = new StrategyArrivee(circuit, v);
+		
+		//ihm.add(new RadarObserver(v,r));
+		Strategy OP = new StrategyOP(v,r);
+		
+		Strategy prudente = new StrategyPrudente();
+		
+//		Strategy s = new StrategySelector();
+//		s.add(prudente, new SelectorPrudent(v, circuit));
+//		s.add(endLine, new SelectorArrivee(circuit, v));
+//		s.add(sP2P, new SelectorPointToPoint(circuit, v, tabVec));
+//		s.add(OP,new SelectorOP());
+//		s.add(sDij, new SelectorDijkstra());
+		
+		//-----------------------------------------------------------------------------------------------------------------
+		final Simulation sim = new Simulation (circuit, v, sDij);
+
+	
+		IHMSwing ihm = new IHMSwing();
+		ManageIHM.manageIHM(ihm, circuit, v);
+		
+		sim.add(ihm);
+		Fenetre fen = new Fenetre(sim, ihm);
+		
+
+	
+		
+		Thread t = new Thread(){
+		public void run(){
+			try{
+				sim.play();
+			} catch (VoitureException e1){
+				e1.printStackTrace();
+			}
+		}};
+		t.start();
+	}
+}

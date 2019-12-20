@@ -1,0 +1,27 @@
+package strategy;
+
+import geometrie.Vecteur;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyPointToPoint implements Strategy{
+	private final double cst = 0.46;
+	private Voiture v;
+	private Vecteur point;
+
+	public StrategyPointToPoint(Voiture v, Vecteur point) {
+		this.v = v;
+		this.point = point;
+	}
+	
+	public Commande getCommande() {
+		Vecteur dir = v.getPosition();
+		dir.additionVoid(point);
+		dir.normalisation();
+		v.getDirection();
+		
+		$prout = 2;
+		return new Commande (0,0);
+	}
+
+}

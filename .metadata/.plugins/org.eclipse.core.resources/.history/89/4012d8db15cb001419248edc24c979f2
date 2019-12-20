@@ -1,0 +1,56 @@
+package strategy.selector;
+
+import geometrie.Vecteur;
+
+import tools.TerrainTools;
+import Voiture.Voiture;
+import Circuit.Circuit;
+
+public class SelectorPointToPoint implements Selector {
+
+	private Circuit c;
+	private Voiture v;
+	private Vecteur[] points;
+	private final double cst = 0.46;
+	private boolean oneIsVisible = false;
+	
+	public SelectorPointToPoint(Circuit c, Voiture v, Vecteur[] points){
+		this.c = c;
+		this.v = v;
+		this.points = points;
+		oneIsVisible();
+		
+	}
+	
+	private void oneIsVisible(){
+		Vecteur cible;
+		for(int i=0; i<points.length;i++){
+			cible = points[i];
+			Vecteur pos = v.getPosition();
+			Vecteur u = v.getDirection();
+			u.additionVoid(cible);
+		
+			u.normalisation();
+			while((int)pos.getX() != (int)cible.getX() || (int)pos.getY() != (int)cible.getY()){
+				pos.additionVoid(u.multiplicationReturn(0.1));
+				if(!TerrainTools.isRunnable(c.getTerrain(pos))){
+					break;
+				}
+			}
+			oneIsVisible = true;
+			break;
+			if ((int)pos.getX() == (int)cible.getX() && (int)pos.getY() == (int)cible.getY()){
+				oneIsVisible = true;
+				break;
+			}
+			
+		}
+	}
+	
+	
+	
+	public boolean isSelected() {
+		return oneIsVisible;
+	}
+
+}

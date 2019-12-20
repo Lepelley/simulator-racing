@@ -1,0 +1,49 @@
+package strategy.selector;
+
+import Voiture.Voiture;
+import geometrie.Vecteur;
+import tools.TerrainTools;
+import Circuit.Circuit;
+import Circuit.Terrain;
+
+public class SelectorArrivee implements Selector{
+
+	private double[] thetas = {0,-Math.PI/8,Math.PI/8};
+	private Circuit c;
+	private Voiture v;
+	
+	public SelectorArrivee(Circuit c, Voiture v){
+		this.c = c;
+		this.v = v;
+	}
+	
+	
+	public double[] scores(){
+		Vecteur dir;
+		Vecteur pos;
+		for(int i=0 ; i < thetas.length ; i++){
+			pos = v.getPosition();
+			dir= v.getDirection();
+			
+			dir.rotation(thetas[i]);
+			while(TerrainTools.isRunnable(c.getTerrain(pos))){
+				if(c.getTerrain(pos) == Terrain.EndLine)
+					break;
+				pos.additionVoid(dir.multiplicationReturn(0.1));
+			}
+			if(c.getTerrain(pos) == Terrain.EndLine){
+				bestIndex = i;
+				break;
+			}
+			distPix[i]=(Math.sqrt( Math.pow( pos.getX() - v.getPosition().getX() , 2) + Math.pow( pos.getY() - v.getPosition().getY() , 2)));
+			if(distPix[i] > distPix[bestIndex]) bestIndex = i;
+		}
+		return distPix;
+	}
+	
+	public boolean isSelected() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

@@ -1,0 +1,61 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import optimisation.Genome;
+import Radar.Radar;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyGenome implements Strategy {
+	private Voiture v;
+	private double[] param;
+	private Strategy s;
+	private double[][] tab;
+	
+	public StrategyGenome(Voiture v, Radar r, Genome<Double> gen, Dijkstra dij){	
+		this.v = v;	
+		s = new StrategyRadarDijkstra(v, r);
+		param = new double[gen.size()];
+	
+		for(int i = 0 ; i < gen.size(); i++){
+			param[i] = gen.get(i);
+		}
+		tab = dij.getMatrice();
+	}
+	
+	public Commande getCommande() {
+
+		int i = (int)v.getPosition().getX();
+		int j = (int)v.getPosition().getY();
+		double acc = 1;
+		
+		if(v.getVitesse() == 0){
+			return new Commande(1,s.getCommande().getTurn());
+		}
+		
+		for(int n = 0; n < param.length; n+=3){
+			if(tab[i][j] > param[n] && tab[i][j] < param[n+1]){
+				if(v.getVitesse() < param[n+2]){
+					acc = 1;
+				}
+				else
+					acc = -1;
+				break;
+			}
+		}
+//		---1_SAFE : 240, < 0, -maxTurn---
+//      ---2_SAFE : 336 , > -0 , maxTurn---
+//		---3_SAFE : 130 , > -0 , maxTurn---
+//		---4_SAFE : 50 , > -0 , maxTurn---
+//		---5_SAFE : 170 , > -0 , maxTurn---
+//		---8_SAFE : 30 , > -0 , maxTurn---
+//		---EEN2 : 65, > -0.75, maxTurn---
+//		-----------------------------------------
+		if(tab[i][j] < 66 && v.getDirection().getX() > -0.75){
+			return new Commande(1,v.getMaxTurn());
+		}
+//		----------------------------------------------------------------------------------------------------
+		
+		return new Commande(acc,s.getCommande().getTurn());
+	}
+}

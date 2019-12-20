@@ -1,0 +1,90 @@
+package main;
+
+
+import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.*;
+import Radar.Radar;
+import Radar.RadarClassique;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.RadarDijkstraObserver;
+import IHM.RadarObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import IHM.VoiturePerso;
+import IHM.Swing.IHMSwing;
+
+public class TestTerrain {
+
+
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez saisir le nom du fichier à ouvrir :");
+		String nomC = sc.nextLine();
+		String fichier = "Tracks/"+nomC+".trk";
+
+		//creation circuit
+		Circuit  circuit = CircuitFactoryFromFile.build(new FileInputStream(fichier));
+		
+		//creation voiture
+		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+		
+
+		
+		//creation Dijkstra
+		Dijkstra dij =  new Dijkstra(circuit) ;
+		//creation strategie
+//		Radar r = new RadarClassique(v, circuit);
+		Strategy s = new StrategyRadar(v,circuit);
+		
+		
+		Simulation sim = new Simulation (circuit, v, s);
+		
+		
+		JFrame fen = new JFrame();
+		IHMSwing ihm = new IHMSwing();
+		
+		ihm.add(new CircuitObserver(circuit));
+		ihm.add(new RadarObserver(circuit, v));
+		//ihm.add(new RadarDijkstraObserver(circuit, v, dij));
+		//ihm.add(new VoitureObserver(v));
+		//ihm.add(new VoiturePerso(v, "aaa", 20,20));
+		//ihm.add(new TrajetObserver(v));
+		sim.add(ihm);
+		
+		ihm.setPreferredSize(new Dimension(768,1024));
+		fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fen.setContentPane(ihm);
+		fen.setVisible(true);
+		fen.pack();
+		
+		
+		sim.play();
+		
+		
+		
+//		ToolsFichiers.saveListeCommande(sim.getRecord(), "Logs/"+nomC+"-log");
+//
+//		DessinTools.dessinerTrajet(nomC, circuit, sim.getList() , Color.black);
+//		
+//		DessinTools.dessinerDijkstra(nomC,circuit,dij.getMax(), new Color(0,153,255));
+
+		sc.close();
+
+	}
+
+}

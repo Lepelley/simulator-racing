@@ -1,0 +1,30 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension; 
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+ 
+public class Fenetre extends JFrame{
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	  private JPanel pan = new JPanel();
+	  private JButton bouton = new JButton("Mon bouton");
+	 
+	  public Fenetre(){
+	    this.setTitle("Animation");
+	    this.setSize(300, 150);
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    this.setLocationRelativeTo(null);
+	    
+	    this.setLayout(new BorderLayout());
+	    //Ajout du bouton à notre content pane
+	    //pan.add(bouton);
+	   // this.setContentPane(pan);
+	    this.getContentPane().add(bouton);
+	    this.getContentPane().add(new JButton("NORTH"), BorderLayout.NORTH);
+	    this.setVisible(true);
+	  }
+}

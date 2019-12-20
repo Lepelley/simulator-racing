@@ -1,0 +1,18 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import Circuit.Circuit;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyToutDroit implements Strategy {
+    @Override
+    public Commande getCommande() {
+            return new Commande(1, 0);
+    }
+
+	@Override
+	public void setRadar(Circuit c, Voiture v, Dijkstra dij) {
+
+	}
+}

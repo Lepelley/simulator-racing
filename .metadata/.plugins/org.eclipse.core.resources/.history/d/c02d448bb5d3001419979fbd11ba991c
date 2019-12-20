@@ -1,0 +1,38 @@
+package tools;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.FileNotFoundException;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.Swing.IHMSwing;
+
+public class Fenetre extends JFrame{
+	
+	private IHMSwing ihm = new IHMSwing();
+	
+	public Fenetre(){
+		this.setSize(1920, 1080);
+		this.setLocation(0, 0);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setContentPane(ihm);
+		this.setVisible(true);
+		ihm.setPreferredSize(new Dimension(768,1024));
+		JPanel pan = new JPanel();
+		try {
+			ihm.add(new CircuitObserver(CircuitFactoryFromFile.build("1_safe.trk")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pan.setSize(this.getWidth(), this.getHeight());
+		pan.setBackground(Color.blue);
+		pan.add(ihm);
+		this.add(pan);
+		this.pack();
+	}
+}

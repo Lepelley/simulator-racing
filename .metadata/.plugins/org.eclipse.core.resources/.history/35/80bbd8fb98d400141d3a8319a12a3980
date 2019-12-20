@@ -1,0 +1,24 @@
+package IHM.Swing;
+
+import java.awt.Dimension;
+
+import Circuit.Circuit;
+import IHM.CircuitObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import Voiture.Voiture;
+
+public class ManageIHM {
+	public static IHMSwing manageIHM(Circuit c, Voiture v){
+		IHMSwing ihm = new IHMSwing();
+		ihm.setMinimumSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.setPreferredSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.add(new CircuitObserver(c));
+		ihm.add(new VoitureObserver(v));
+		ihm.add(new TrajetObserver(v));
+		
+		return ihm;
+	}
+	
+	
+}

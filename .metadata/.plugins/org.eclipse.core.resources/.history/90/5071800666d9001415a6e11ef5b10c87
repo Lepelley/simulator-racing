@@ -1,0 +1,154 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import geometrie.Vecteur;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyDebile implements Strategy {
+
+	private Strategy s;
+	private Voiture v;
+	private double[][] tab;
+	
+	public StrategyDebile(Strategy s,Voiture v,Dijkstra dij){
+		this.s = s;
+		this.v = v;
+		tab = dij.getMatrice();
+		
+	}
+	
+	
+	public Commande getCommande() {
+		int i = (int)v.getPosition().getX();
+		int j = (int)v.getPosition().getY();
+		System.out.println(tab[i][j]);
+		if(tab[i][j] < 2160 && tab[i][j] > 2145){
+			if(v.getVitesse() < 0.33)
+				return new Commande(1,s.getCommande().getTurn());
+			else
+				return new Commande(-1,s.getCommande().getTurn());
+		}
+		return (s.getCommande());
+	}
+}
+	
+	
+//----------------------------------------------------------BOND_SAFE----------------------------------------------------
+//	@Override
+//	public Commande getCommande() {
+//		int i = (int)v.getPosition().getX();
+//		int j = (int)v.getPosition().getY();
+//		System.out.println(tab[i][j]);
+//		if(v.getPosition().distanceTo(new Vecteur(148,308)) < 50 && tab[i][j] > tab[148][308]){
+//
+//			if(v.getVitesse() < 0.5)
+//				return new Commande(1,s.getCommande().getTurn());
+//			else
+//				return new Commande(-1,s.getCommande().getTurn());
+//		}
+//		else if(v.getPosition().distanceTo(new Vecteur(205,180)) < 50 && tab[i][j] > tab[205][180]){
+//
+//			if(v.getVitesse() < 0.6)
+//				return new Commande(1,s.getCommande().getTurn());
+//			else
+//				return new Commande(-1,s.getCommande().getTurn());
+//		}
+//		else if(tab[i][j] < 400 && tab[i][j] > 295){
+//			if(v.getVitesse() < 0.7)
+//				return new Commande(1,s.getCommande().getTurn());
+//			else
+//				return new Commande(-1,s.getCommande().getTurn());
+//		}
+//		
+//		else {
+//			return (s.getCommande());
+//		}
+//	}
+
+	
+//----------------------------------------------AUFEU----------------------------------------------
+//	public Commande getCommande() {
+//		int i = (int)v.getPosition().getX();
+//		int j = (int)v.getPosition().getY();
+//		System.out.println(tab[i][j]);
+//		if(tab[i][j] < 100 && tab[i][j] > 25){
+//
+//			if(v.getVitesse() < 0.33)
+//				return new Commande(1,s.getCommande().getTurn());
+//			else
+//				return new Commande(-1,s.getCommande().getTurn());
+//		}
+//		else if(tab[i][j] < 15){
+//
+//			if(v.getVitesse() < 0.22)
+//				return new Commande(1,s.getCommande().getTurn());
+//			else
+//				return new Commande(-1,s.getCommande().getTurn());
+//		}
+//
+//		else {
+//			return (s.getCommande());
+//		}
+//	}
+
+//-------------------------------------------7_SAFE------------------------------------------------
+//public Commande getCommande() {
+//	int i = (int)v.getPosition().getX();
+//	int j = (int)v.getPosition().getY();
+//	System.out.println(tab[i][j]);
+//	if(tab[i][j] < 550 && tab[i][j] > 487){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	else if(tab[i][j] < 330 && tab[i][j] > 288){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	return (s.getCommande());
+//}
+
+//-----------------------------------------8_SAFE-----------------------------------
+//public Commande getCommande() {
+//	int i = (int)v.getPosition().getX();
+//	int j = (int)v.getPosition().getY();
+//	System.out.println(tab[i][j]);
+////	System.out.println(tab[i][j]);
+//	if(tab[i][j] < 1589 && tab[i][j] > 1530){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	else if(tab[i][j] < 1345 && tab[i][j] > 1309){
+//		if(v.getVitesse() < 0.6)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	else if(tab[i][j] < 1131 && tab[i][j] > 1100){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	else if(tab[i][j] < 659 && tab[i][j] > 619){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	else if(tab[i][j] < 113 && tab[i][j] > 63){
+//		if(v.getVitesse() < 0.7)
+//			return new Commande(1,s.getCommande().getTurn());
+//		else
+//			return new Commande(-1,s.getCommande().getTurn());
+//	}
+//	return (s.getCommande());
+//}
+
+

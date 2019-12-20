@@ -1,0 +1,70 @@
+package strategy;
+
+import dijkstra.Dijkstra;
+import optimisation.Genome;
+import Circuit.Circuit;
+import Radar.Radar;
+import Voiture.Commande;
+import Voiture.Voiture;
+
+public class StrategyGenome implements Strategy {
+	private Voiture car;
+	private Radar radar;
+	private double[] param;
+	
+	public StrategyGenome(Voiture v, Radar r, Genome<Double> gen){	
+		this.car = v;	
+		this.radar = r;
+		param = new double[gen.size()];
+	
+		for(int i = 0 ; i < gen.size(); i++){
+			param[i] = gen.get(i);
+		}
+	}
+
+//    public Commande getCommande() {
+//        radar.scores();        
+//        double com = radar.thetas()[radar.getBestIndex()]/car.getBraquage();
+//        double turnAbs = Math.min(Math.abs(com), car.getMaxTurn());
+//
+//        double acc = 1; // accélération par défaut
+////        if(radar.distancesInPixels()[0]<param[0])
+////            acc = param[1];  
+////        else if(radar.distancesInPixels()[radar.getBestIndex()] < param[0]*1.5)
+////            acc = param[1];                    
+//        if(param[0]*turnAbs < Math.abs(com)) acc = param[1];
+////        else if(param[2]*turnAbs < Math.abs(com)) acc = param[3];
+//
+//        if(car.getVitesse() < param[2]) acc = 1;
+////        if(car.getVitesse() < param[5]) acc = 1;
+//
+//        Commande c = new Commande(acc, turnAbs * Math.signum(com));
+//        return c;
+//    }
+	
+	public Commande getCommande() {
+        radar.scores();        
+        double com =radar.thetas()[radar.getBestIndex()]/car.getBraquage();
+        double turnAbs = Math.min(Math.abs(com), car.getMaxTurn());
+
+        double acc = 1; // acc�l�ration par d�faut
+        if(radar.distancesInPixels()[0]<param[0])
+            acc = param[1];  
+        else if(radar.distancesInPixels()[radar.getBestIndex()] < (param[0]*1.5))
+            acc = param[1];                    
+        else if(param[2]*turnAbs < Math.abs(com)) acc = param[3];
+        else if(param[4]*turnAbs < Math.abs(com)) acc = param[5];
+
+        if(car.getVitesse() < param[6]) acc = 0.5;
+        if(car.getVitesse() < param[7]) acc = 1;
+
+        Commande c = new Commande(acc, turnAbs * Math.signum(com));
+        return c;
+    }
+
+	@Override
+	public void setRadar(Circuit c, Voiture v, Dijkstra dij) {
+		
+	}
+
+}

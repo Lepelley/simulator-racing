@@ -1,0 +1,125 @@
+package main;
+
+public class CreeTableau {
+
+	public static void main(String[] args) {
+		double[] defaultparam = new double[] {
+				
+				3605,3650,0.6     ,3535,3565,0.7     ,3370,3425,0.5    ,3265,3310,0.55       ,3165,3210,0.4      ,3020,3080,0.7     ,2930,2970,0.7    ,2730,2790,0.7    ,2650,2690,0.7    ,2485,2535,0.5    ,2390,2430,0.5
+				,2370,2390,0.5    ,2320,2350,0.6     ,2250,2270,0.7    ,2200,2250,0.5        ,2130,2170,0.5      ,1955,2000,0.6     /**/,1885,1915,0.6    ,1815,1845,0.7    ,1745,1795,0.5    ,1695,1710,0.6    ,1645,1695,0.515311   ,1570,1612,0.5   ,1490,1530,0.6     ,1440,1470,0.6     ,1395,1425,0.6     ,1355,1375,0.7    ,1285,1335,0.7
+				,1100,1150,0.5    ,1060,1100,0.5     ,1010,1050,0.5    ,875,930,0.57047        ,840,870,0.5        ,725,775,0.61388        ,670,725,0.7155     ,530,565,0.7      ,460,490,0.7083       ,245,290,0.557      ,160,210,0.53615
+		};
+		
+		double[] defaultparamSig;
+		double[] paramMax ;
+		double[] paramMin;
+		
+		if(defaultparam.length % 3 != 0){
+			System.out.println("Taille inconforme : "+defaultparam.length);
+			return;
+		}
+		defaultparamSig = new double[defaultparam.length];
+		paramMax = new double[defaultparam.length];
+		paramMin = new double[defaultparam.length];
+		for(int i = 0; i < defaultparam.length;i++){
+			if(i%3 == 2){
+				defaultparamSig[i] = 0.2;
+				paramMax[i] = (double)(Math.round((defaultparam[i] + 0.2)*100)) /100;
+				paramMin[i] = (double)(Math.round((defaultparam[i] - 0.2)*100)) /100;
+				if(paramMax[i] > 1) paramMax[i] =1;
+				if(paramMin[i] < 0) paramMax[i] =0;
+			}
+			else{
+				defaultparamSig[i] = 10;
+				paramMax[i] = defaultparam[i] + 20;
+				paramMin[i] = defaultparam[i] - 20;
+			}
+		}
+			
+		System.out.print("double[] defaultparam = new double[] {");
+		for(int h = 0 ; h < defaultparam.length;h++){
+			if(h == defaultparam.length-1)
+				System.out.print(defaultparam[h]+"};");
+			else
+				System.out.print(defaultparam[h]+",");
+		}		
+		System.out.println();
+		System.out.print("double[] defaultparamSig = new double[] {");
+		for(int j = 0 ; j < defaultparam.length;j++){
+			if(j == defaultparam.length-1)
+				System.out.print(defaultparamSig[j]+"};");
+			else
+				System.out.print(defaultparamSig[j]+",");
+		}
+		System.out.println();
+		System.out.print("double[] paramMax = new double[] {");
+		for(int k = 0 ; k < defaultparam.length;k++){
+			if(k == defaultparam.length-1)
+				System.out.print(paramMax[k]+"};");
+			else
+				System.out.print(paramMax[k]+",");
+		}
+		System.out.println();
+		System.out.print("double[] paramMin = new double[] {");
+		for(int l = 0 ; l < defaultparam.length;l++){
+			if(l == defaultparam.length-1)
+				System.out.print(paramMin[l]+"};");
+			else
+				System.out.print(paramMin[l]+",");
+		}
+		
+		
+		System.out.println();
+		System.out.println();
+		
+		defaultparamSig = new double[defaultparam.length];
+		paramMax = new double[defaultparam.length];
+		paramMin = new double[defaultparam.length];
+		for(int a = 0; a < defaultparam.length;a++){
+			if(a%3 == 2){
+				defaultparamSig[a] = 0.1;
+				paramMax[a] = (double)(Math.round((defaultparam[a] + 0.2)*100)) /100;
+				paramMin[a] = (double)(Math.round((defaultparam[a] - 0.2)*100)) /100;
+				if(paramMax[a] > 1) paramMax[a] =1;
+				if(paramMin[a] < 0) paramMax[a] =0;
+			}
+			else{
+				defaultparamSig[a] = 7;
+				paramMax[a] = defaultparam[a] + 10;
+				paramMin[a] = defaultparam[a] - 10;
+			}
+		}
+			
+		System.out.print("double[] defaultparam = new double[] {");
+		for(int b = 0 ; b < defaultparam.length;b++){
+			if(b == defaultparam.length-1)
+				System.out.print(defaultparam[b]+"};");
+			else
+				System.out.print(defaultparam[b]+",");
+		}		
+		System.out.println();
+		System.out.print("double[] defaultparamSig = new double[] {");
+		for(int c = 0 ; c < defaultparam.length;c++){
+			if(c == defaultparam.length-1)
+				System.out.print(defaultparamSig[c]+"};");
+			else
+				System.out.print(defaultparamSig[c]+",");
+		}
+		System.out.println();
+		System.out.print("double[] paramMax = new double[] {");
+		for(int d = 0 ; d < defaultparam.length;d++){
+			if(d == defaultparam.length-1)
+				System.out.print(paramMax[d]+"};");
+			else
+				System.out.print(paramMax[d]+",");
+		}
+		System.out.println();
+		System.out.print("double[] paramMin = new double[] {");
+		for(int e = 0 ; e < defaultparam.length;e++){
+			if(e == defaultparam.length-1)
+				System.out.print(paramMin[e]+"};");
+			else
+				System.out.print(paramMin[e]+",");
+		}
+	}
+}

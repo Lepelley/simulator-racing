@@ -1,0 +1,55 @@
+import java.awt.Color;
+
+import javax.swing.JFrame;
+
+
+public class Fenetre extends JFrame{
+	
+	private Rond rond = new Rond();
+	
+	  public Fenetre(){
+		    this.setTitle("Bob");
+		    this.setSize(400, 500);
+		    this.setLocationRelativeTo(null);
+		    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
+		    this.setVisible(true);
+		    go();
+	}
+	  
+	  private void go(){
+			  int x;
+			  int y;
+			  boolean reculeX=false;
+			  boolean reculeY=false;
+			  while (true){
+				  x = rond.getX();
+				  y = rond.getY();
+				  if(x == 0)
+					  reculeX = false;
+				  if(y == 0)
+					  reculeY = false;
+				  if(x == rond.getWidth())
+					  reculeX = true;
+				  if(y == rond.getHeight())
+					  reculeY = true;
+				  
+				  if(reculeX)
+					  rond.setX(--x);
+				  else
+					  rond.setX(--x);
+				  if(reculeY)
+					  rond.setY(--y);
+				  else
+					  rond.setY(++y);
+				  repaint();
+				  try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			  
+				  
+		  }
+	  }
+}

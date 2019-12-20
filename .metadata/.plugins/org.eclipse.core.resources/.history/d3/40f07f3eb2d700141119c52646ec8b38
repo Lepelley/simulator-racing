@@ -1,0 +1,13 @@
+package IHM;
+
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+public class ImagePerso extends JPanel{
+	public ImagePerso(BufferedImage im){
+		this.setPreferredSize(new Dimension(im.getWidth(),im.getHeight());
+	}
+
+}

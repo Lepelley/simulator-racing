@@ -1,0 +1,103 @@
+package IHM;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+import tools.DessinTools;
+import tools.ToolsFichiers;
+import Circuit.Circuit;
+import Circuit.Terrain;
+
+public class ImagePerso extends JPanel implements MouseListener{
+	
+	private BufferedImage im;
+	private Circuit c;
+	int width;
+	int height;
+	Terrain[][] terrain;
+	
+	public ImagePerso(Circuit c){
+		this.c=c;
+		width = c.getHeight();
+		height = c.getWidth();
+		System.out.println(width);
+		System.out.println(height);
+		terrain = new Terrain[width][height];
+		im = DessinTools.imageFromCircuit(c);
+		this.setPreferredSize(new Dimension(im.getWidth(),im.getHeight()));
+		for(int i=0; i< width;i++){
+			for(int j=0 ; j < height ; j++){
+				terrain[i][j] = c.getTerrain(i, j);
+			}
+		}
+	}
+
+
+	@Override
+	  protected void paintComponent(Graphics g) {
+
+	    super.paintComponent(g);
+	    g.drawImage(im, 0, 0, null);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		Graphics2D g = (Graphics2D)im.getGraphics();
+		g.setColor(Color.GREEN);
+		g.fillOval(arg0.getX()-2, arg0.getY()-2, 4, 4);
+		for(int i = arg0.getX()-2 ; i < arg0.getX()+2 ; i++){
+			for(int j = arg0.getY()-2 ; j < arg0.getY()+2 ; j++){
+				terrain[i][j] = Terrain.Herbe;
+			}
+		}
+		System.out.println("lololol");
+		arg0.getComponent().repaint();
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		Graphics2D g = (Graphics2D)im.getGraphics();
+		g.setColor(Color.GREEN);
+		g.fillOval(arg0.getX()-2, arg0.getY()-2, 4, 4);
+		for(int i = arg0.getX()-2 ; i < arg0.getX()+2 ; i++){
+			for(int j = arg0.getY()-2 ; j < arg0.getY()+2 ; j++){
+				terrain[i][j] = Terrain.Herbe;
+			}
+		}
+		arg0.getComponent().repaint();
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void done(){
+		ToolsFichiers.fichierFromTerrain(terrain, "Tracks/1_safe.trk-perso");
+	}
+//	public Circuit getCircuit(){
+//		return c;
+//	}
+}

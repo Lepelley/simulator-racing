@@ -1,0 +1,54 @@
+package tools;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.FileNotFoundException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.Swing.IHMSwing;
+
+public class Fenetre extends JFrame{
+	
+	private IHMSwing ihm = new IHMSwing();
+	
+	public Fenetre() throws FileNotFoundException{
+		this.setPreferredSize(new Dimension(1920, 1024));
+		this.setLocation(0, 0);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setContentPane(ihm);
+		this.setVisible(true);
+		Circuit c = CircuitFactoryFromFile.build("Tracks/1_safe.trk");
+		
+		ihm.setPreferredSize(new Dimension(c.getHeight(),c.getWidth()));
+		ihm.setLocation(0, 0);
+		ihm.add(new CircuitObserver(c));
+		
+		
+		
+		JPanel course = new JPanel();
+		course.setPreferredSize(new Dimension(c.getHeight(),c.getWidth()));
+		course.add(ihm);
+		
+		JPanel gauche = new JPanel();
+		gauche.setPreferredSize(new Dimension(this.getWidth()-c.getHeight(),this.getHeight()-c.getWidth()));
+		
+		JPanel fond = new JPanel();
+		fond.setLayout(new BoxLayout(fond, BoxLayout.PAGE_AXIS));
+		fond.setSize(this.getWidth(), this.getHeight());
+		fond.setBackground(Color.blue);
+		fond.add(course);
+		this.setContentPane(fond);
+		this.pack();
+	}
+	
+	class Box extends JComboBox{
+		
+	}
+}

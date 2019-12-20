@@ -1,0 +1,13 @@
+
+public class K {
+	
+	private String hihi;
+	
+	public K(String hihi){
+		this.hihi = hihi;
+	}
+	
+	public void ouah(){
+		hihi+=" OMG TG NOOB";
+	}
+}

@@ -1,0 +1,12 @@
+package strategy;
+
+import Voiture.Commande;
+
+public class StrategyPrudente implements Strategy{
+
+	@Override
+	public Commande getCommande() {
+		return new Commande(-1,0)clone();
+	}
+
+}

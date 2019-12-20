@@ -1,0 +1,133 @@
+package main;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import dijkstra.Dijkstra;
+import simulation.Simulation;
+import strategy.*;
+import tools.DessinTools;
+import tools.TerrainTools;
+import Radar.Radar;
+import Radar.RadarClassique;
+import Radar.RadarDijkstra;
+import Voiture.Voiture;
+import Voiture.VoitureException;
+import Voiture.VoitureFactory;
+import Circuit.Circuit;
+import Circuit.CircuitFactoryFromFile;
+import IHM.CircuitObserver;
+import IHM.EnregistreurDePoints;
+import IHM.RadarObserver;
+import IHM.TrajetObserver;
+import IHM.VoitureObserver;
+import IHM.VoiturePerso;
+import IHM.Swing.IHMSwing;
+
+public class TestTerrain {
+
+
+	public static void main(String[] args) throws VoitureException, IOException {
+		
+		int j=0;
+		for(int i= 0 ; i < 10 ; i++){
+			j=0;
+			while(j<10){
+				j++;
+				
+				if(j == 2) continue;
+				System.out.println("i ="+i);
+				System.out.println("j ="+j);
+
+			}
+		}
+//		Scanner sc = new Scanner(System.in);
+//		System.out.println("Veuillez saisir le nom du fichier à ouvrir :");
+//		String nomC = sc.nextLine();
+//		String fichier = "Tracks/"+nomC+".trk";
+//
+//		//creation circuit
+//		Circuit  circuit = CircuitFactoryFromFile.build(new FileInputStream(fichier));
+//		
+//		//creation voiture
+//		Voiture v = VoitureFactory.build(circuit.getPointDepart(), circuit.getDirectionDepart());
+//		
+////		//creation radar
+////		Radar r = new RadarClassique(v,circuit);
+////		//creation strategie
+////		Strategy s = new StrategyRadar(v,circuit,r);
+//		
+//		
+//		//creation radar Dijkstra
+//		Dijkstra dij =  new Dijkstra(circuit) ;
+//		Radar r = new RadarDijkstra(v, circuit, dij.getMatrice());
+//		//creation strategie Dijkstra
+//		Strategy s = new StrategyRadarDijkstra(v, circuit, r);
+//		
+//		final Simulation sim = new Simulation (circuit, v, s);
+//		
+//		
+//		JFrame fen = new JFrame();
+//
+//		IHMSwing ihm = new IHMSwing();
+//		
+//		
+//		ihm.add(new CircuitObserver(circuit));
+//		//ihm.add(new RadarObserver(v,r));
+//		//ihm.add(new RadarDijkstraObserver(circuit, v, dij));
+//		//ihm.add(new VoitureObserver(v));
+//		//ihm.add(new VoiturePerso(v, "aaa", 20,20));
+//		//ihm.add(new TrajetObserver(v));
+//		sim.add(ihm);
+//		
+//		ihm.setPreferredSize(new Dimension(768,1024));
+//		fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		fen.setContentPane(ihm);
+//		fen.setVisible(true);
+//		fen.pack();
+//
+//		Thread t = new Thread(){
+//		public void run(){
+//			try{
+//				sim.play();
+//			} catch (VoitureException e1){
+//				e1.printStackTrace();
+//			}
+//		}};
+//		t.start();
+//		
+////		JFrame fen2 = new JFrame();
+////
+////		BufferedImage Im = DessinTools.imageFromCircuit(circuit);
+////		JLabel lab = new JLabel(new ImageIcon(Im));
+////		fen2.add(lab);
+////		
+////		
+////		EnregistreurDePoints edp = new EnregistreurDePoints(Im);
+////		lab.addMouseListener(edp);
+////		
+////
+////		fen2.setVisible(true);
+////		fen2.pack();
+//		
+//		
+////		ToolsFichiers.saveListeCommande(sim.getRecord(), "Logs/"+nomC+"-log");
+////
+////		DessinTools.dessinerTrajet(nomC, circuit, sim.getList() , Color.black);
+////		
+////		DessinTools.dessinerDijkstra(nomC,circuit,dij.getMax(), new Color(0,153,255));
+//
+//		sc.close();
+
+	}
+
+}

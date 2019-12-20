@@ -1,0 +1,19 @@
+import java.awt.Color;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+//		Fenetre fen = new Fenetre();
+//		
+//		
+//		fen.setBackground(Color.orange);
+		
+		String s = "bonjour";
+		K lol = new K(s);
+		lol.ouah();
+		System.out.println(s);
+		System.out.println(lol.getHihi());
+	}
+
+}

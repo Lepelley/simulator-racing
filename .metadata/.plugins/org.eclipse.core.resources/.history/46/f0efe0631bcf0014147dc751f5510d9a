@@ -1,0 +1,11 @@
+package optimisation;
+
+public class MutationOperatorImplDouble implements MutationOperator<Double> {
+
+	@Override
+	public void mute(Genome<Double> g) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
